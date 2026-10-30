@@ -9,10 +9,15 @@
 //! - Requests are parsed with `httparse` and handed to the Tokio runtime (`Router::oneshot`).
 //!   Response bytes (including streamed SSE chunks) come back through a queue + `eventfd`, which the
 //!   ring watches with a read, and go out with `send`.
+//! - **Inline fast path**: each request is first polled once right on the ring thread. Routes that
+//!   finish without waiting (health, rounds, scenarios, decisions) are answered with no thread hop
+//!   and no eventfd; only requests that would wait (call relay, stats) move to Tokio.
 
 use std::{
     alloc::{Layout, alloc_zeroed},
+    cell::Cell,
     collections::{HashMap, VecDeque},
+    future::Future,
     io,
     net::SocketAddr,
     os::fd::{IntoRawFd, RawFd},
@@ -21,6 +26,7 @@ use std::{
         atomic::{AtomicU16, Ordering},
         mpsc,
     },
+    task::{Context, Waker},
     thread,
 };
 
@@ -185,9 +191,16 @@ struct Outbox {
 impl Outbox {
     fn push(&self, fd: RawFd, gen_: u32, out: Out) {
         self.queue.lock().unwrap().push((fd, gen_, out));
+        if INLINE.get() {
+            return; // the ring thread drains the queue itself right after the inline poll
+        }
         let one = 1u64;
         unsafe { libc::write(self.efd, &one as *const u64 as *const libc::c_void, 8) };
     }
+}
+
+thread_local! {
+    static INLINE: Cell<bool> = const { Cell::new(false) };
 }
 
 struct Conn {
@@ -370,18 +383,7 @@ impl Worker {
                 self.pump(fd);
             }
             WAKE => {
-                let items = std::mem::take(&mut *self.outbox.queue.lock().unwrap());
-                let mut touched = Vec::new();
-                for (fd, gen_, out) in items {
-                    if let Some(c) = self.conns.get_mut(&fd).filter(|c| c.gen_ == gen_) {
-                        c.pending.push_back(out);
-                        touched.push(fd);
-                    }
-                }
-                touched.dedup();
-                for fd in touched {
-                    self.pump(fd);
-                }
+                self.drain_outbox();
                 self.arm_wake();
             }
             _ => {} // CLOSE
@@ -389,6 +391,43 @@ impl Worker {
     }
 
     /// Sends the next queued piece, or finishes the response.
+    fn drain_outbox(&mut self) {
+        let items = std::mem::take(&mut *self.outbox.queue.lock().unwrap());
+        let mut touched = Vec::new();
+        for (fd, gen_, out) in items {
+            if let Some(c) = self.conns.get_mut(&fd).filter(|c| c.gen_ == gen_) {
+                c.pending.push_back(out);
+                touched.push(fd);
+            }
+        }
+        touched.dedup();
+        for fd in touched {
+            self.pump(fd);
+        }
+    }
+
+    /// Polls the request future once on this thread. Done: answer now, no hop. Pending: hand the
+    /// (already started) future to Tokio, which polls it again with a real waker.
+    fn run_inline(&mut self, fut: impl Future<Output = ()> + Send + 'static) {
+        let mut fut = Box::pin(fut);
+        let done = {
+            let _rt = self.rt.enter();
+            INLINE.set(true);
+            let r = fut.as_mut().poll(&mut Context::from_waker(Waker::noop()));
+            INLINE.set(false);
+            r.is_ready()
+        };
+        if done {
+            self.drain_outbox();
+        } else {
+            // Pieces queued during the inline poll (e.g. the response head) need a wake-up too
+            if !self.outbox.queue.lock().unwrap().is_empty() {
+                self.drain_outbox();
+            }
+            self.rt.spawn(fut);
+        }
+    }
+
     fn pump(&mut self, fd: RawFd) {
         loop {
             let Some(c) = self.conns.get_mut(&fd) else {
@@ -535,7 +574,7 @@ impl Worker {
         c.busy = true;
 
         let (gen_, outbox, router) = (c.gen_, self.outbox.clone(), self.router.clone());
-        self.rt.spawn(async move {
+        let fut = async move {
             let res = router.oneshot(request).await.unwrap_or_else(|e| match e {});
             let (parts, mut body) = res.into_parts();
             let exact = http_body::Body::size_hint(&body).exact();
@@ -602,6 +641,7 @@ impl Worker {
                     keep_alive: keep_alive && ok,
                 },
             );
-        });
+        };
+        self.run_inline(fut);
     }
 }
