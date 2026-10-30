@@ -6,6 +6,30 @@ Working name: **Phishing Dojo** <!-- TODO: final name -->
 
 Most breaches start with a person, not a bug. Non-technical staff practise spotting scams in a safe simulator. They work through emails (with links and attachments) and **live phone calls** with an AI caller. Each one is either a normal work request or a scam. They either do what's asked or report it, and a debrief shows which red flags they caught or missed.
 
+## Scope for the 18:30 submission (cut at 15:45)
+
+**This section overrides the rest of the document.** Anything not listed here is cut.
+
+| Time | Milestone |
+|---|---|
+| **16:45** | Each part works on its own: frontend on the mock API, ~20 Gemma scenarios committed, a live ElevenLabs call with a Gemma persona |
+| **17:15** | Integrated: a full round of emails + calls → debrief → score on the published Lovable app |
+| **17:30** | **Feature freeze.** Only bug fixes after this |
+| 17:30–18:00 | README (pitch, screenshots, AI tools used, what we learned), demo video with audio |
+| **18:00–18:20** | Submit on OrganizerHQ to **all 4 challenges**. 10 min buffer |
+
+| Who | Builds | Card |
+|---|---|---|
+| **Lovable** | Inbox + email view + Do it / Report, link hover + `m365_login` / `intranet_page` landing pages, `pdf` / `docx_macro` attachment previews, call screen, debrief + score | #4 #5 #16 #17 #18 #19 |
+| **Dev 2** | Script that asks Gemma 4 (Gemini API) for ~20 scenarios, validates them against the schema, and **commits them to `backend/fixtures/scenarios.json`**. No live generation | #6 |
+| **Dev 3** | ElevenLabs agent: custom LLM = Gemma 4, persona per scenario, `end_call`, voices. Test against Gemini's OpenAI-compatible endpoint directly first, then switch to Laurenz's relay | #8 |
+| **Laurenz** | Round = 5 random scenarios, mixed scam/legit. `POST /v1/chat/completions` relay: loads the persona for `scenario_id` server-side, streams from Gemma 4 | #9 #12 |
+| **Everyone at 17:30** | README, video, submission | #20 |
+
+How the call ends (simplified): **Hang up & report** → decision `report`. The agent ends the call (`end_call`) after getting what it wanted or finishing the legit request → decision `comply`. The debrief uses the scenario's `redFlags`. No per-turn tool tracking.
+
+**Cut:** io_uring server, SQLite + group commit, live scenario pool, local llama-server / MTP, rate limit, Gemma-written debriefs, stats page, check-a-real-email, German, `SEND_ZC`. The **Open-Source AI** entry still qualifies: Gemma 4 is open-weight and essential (scenarios + caller), the repo is public and MIT-licensed. Mention in the README that the benchmark shows it runs on our own CPU server.
+
 ## Decisions
 
 "Team" = decided in the grilling session. "Claude's call" = a reasonable default, so object if you disagree.
@@ -152,27 +176,6 @@ Default until the numbers arrive:
 - **Live calls:** the faster of local and Gemini API (`gemma-4-26b-a4b-it`). Same model either way. Switching is one env var (`MODEL_BASE_URL`).
 - **Abliterated Gemma:** only if plain Gemma refuses to write scenarios with the training framing. Refusal check pending.
 
-## Work split
-
-| Who | Owns | First milestone |
-|---|---|---|
-| **Laurenz** (Rust) | Backend: Axum skeleton → io_uring server, SQLite writer, deploy | `/health` + `POST /api/round` returning **mock** scenarios, deployed |
-| **Dev 2** | Gemma scenarios: prompts, JSON schema, red-flag labelling, debrief text, pool generator, later check-email | 5 good scenarios (email + call, scam + legit) passing the schema |
-| **Dev 3** | Voice: ElevenLabs agent, custom-LLM wiring, call personas, `end_call` tools, voices; llama-server on the R740 | A live call with a hard-coded persona from the Lovable test page |
-| **Lovable** | Inbox, email view, link hover + landing templates, attachment previews, call screen, debrief, score, stats | Inbox + email view + debrief working on the mock JSON from this doc |
-
-### Order
-
-1. **Skeleton (everyone in parallel, ~1.5h):** mock scenarios served, Lovable renders them, a hard-coded live call works, Gemma produces valid scenarios.
-2. **Real data (~2h):** pool generation → real scenarios in the app. Live calls use real personas + tool-based ending. Debrief end to end.
-3. **Niche tech (~2h, Laurenz):** io_uring server replaces Axum behind the same smoke test. SQLite group commit. Stats page.
-4. **Extras:** check-email, MTP speculative decoding, prompt cache tuning, German.
-5. **Feature freeze at deadline − 2h** → polish, demo video, submission ([SUBMISSION.md](SUBMISSION.md)).
-
-### Cut list (drop from the top if late)
-
-`SEND_ZC` → German → stats page → check-email → MTP decoding → extra landing/attachment templates → io_uring (ship on Axum; still mention it in the demo as work in progress).
-
 ## Risks
 
 | Risk | Mitigation |
@@ -180,5 +183,6 @@ Default until the numbers arrive:
 | Gemma refuses to write scams | Training framing in the system prompt; fallback abliterated Gemma 4 locally |
 | Local model too slow for calls | Calls on the Gemini API, same model |
 | Custom-LLM call flow differs from our assumptions | Dev 3 verifies in hour 1; fallback: ElevenLabs' built-in LLM for the call, with Gemma for scenarios + debrief only (weaker for the Gemma prize) |
-| io_uring server not ready | Axum fallback is the default until it passes the smoke test |
+| Gemini's OpenAI endpoint doesn't serve Gemma 4 for ElevenLabs | Dev 3 points the agent at Laurenz's relay, which calls Gemma through the native Gemini API |
+| Running late | At 17:30 whatever works gets demoed. Emails alone + one call is still a full entry for all 4 challenges |
 | Wi-Fi / API down during the demo | Recorded demo video as backup |
