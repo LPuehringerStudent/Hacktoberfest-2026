@@ -46,7 +46,7 @@ How the call ends (simplified): **Hang up & report** → decision `report`. The 
 | 8 | Rust backend: io_uring, multishot accept/recv, grouped SQLite transactions, + extras (#14) | Team |
 | 9 | No accounts. Score kept in browser `localStorage` | Team |
 | 10 | Backend only ever generates scenarios for the fictional company. No user-chosen targets or free-text scenarios. Per-IP rate limit | Team |
-| 11 | SQLite holds only: scenario cache + anonymous event log | Team |
+| 11 | SQLite holds only: scenario cache + anonymous event log. **Built (16:35):** event log with group commit + `/api/stats`. The scenario cache was cut | Team |
 | 12 | Inbound server built directly on the `io-uring` crate, with an Axum fallback behind a cargo feature | Team |
 | 13 | **Build routes on Axum first**, swap in the io_uring server once it passes the same smoke test. The frontend is never blocked by the risky part | Claude's call |
 | 14 | Extras: JSON-schema/grammar-constrained output, MTP speculative decoding, llama-server prompt cache. `SEND_ZC` is a stretch goal | Team |
