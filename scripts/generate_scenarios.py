@@ -20,6 +20,7 @@ import time
 import urllib.error
 import urllib.request
 from pathlib import Path
+from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parent.parent
 FIXTURES = ROOT / "backend" / "fixtures" / "scenarios.json"
@@ -84,7 +85,7 @@ Rules:
 - Every domain and email address uses the .example TLD. Scam look-alikes are e.g. donauwerk-support.example, not real TLDs.
 - trap is true only for scam links/attachments (credential page, macro document). Legit scenarios have no traps.
 - A docx_macro attachment's preview asks to "Enable content". pdf previews show plausible document text.
-- Scams have 2-4 redFlags; each evidence quotes the email/opening line or names the concrete mismatch.
+- Scams have 2-5 redFlags; if a link's shown and real domains differ, include link_mismatch; each evidence quotes the email/opening line or names the concrete mismatch.
 - Legit scenarios have 2-3 safeSignals and may be mildly unusual, but follow the processes above.
 - personaPrompt (calls): second person ("You are ..."), describes who the caller pretends to be, what they want,
   how they react to pushback, and ends with: "Keep every reply to 1-2 short sentences. Never break character."
@@ -123,6 +124,10 @@ TEMPLATES = {"m365_login", "intranet_page"}
 KINDS = {"pdf", "docx_macro"}
 GIVEAWAY_RE = re.compile(r"scam|phish|impersonat|\bfake\b|fraudster|attacker|\b20(1\d|2[0-5])\b|\bHallo\b|\bIch\b", re.I)
 DOMAIN_RE = re.compile(r"(?:https?://|@)([A-Za-z0-9.-]+\.[A-Za-z]{2,})")
+
+
+def hostname(url):
+    return urlparse(url if "//" in url else "https://" + url).hostname
 
 
 def load_env():
@@ -197,8 +202,8 @@ def validate(s, channel, scam):
         for f in s["redFlags"]:
             if not isinstance(f, dict) or f.get("type") not in RED_FLAGS or not isinstance(f.get("evidence"), str):
                 errs.append(f"bad redFlag {f!r}")
-        if scam and not 2 <= len(s["redFlags"]) <= 4:
-            errs.append("scams need 2-4 redFlags")
+        if scam and not 2 <= len(s["redFlags"]) <= 5:
+            errs.append("scams need 2-5 redFlags")
         if not scam and s["redFlags"]:
             errs.append("legit scenarios have redFlags: []")
     if not isinstance(s.get("safeSignals", []), list) or not all(isinstance(x, str) for x in s.get("safeSignals", [])):
@@ -229,6 +234,12 @@ def validate(s, channel, scam):
                 errs.append(f"link {l.get('id')}: landing needs template in {sorted(TEMPLATES)}, brand, trap")
             elif land["trap"] and not scam:
                 errs.append("legit scenarios have no trap links")
+            shown, real = (hostname(l.get(k) or "") for k in ("shownHref", "realHref"))
+            if shown != real:
+                if not scam:
+                    errs.append(f"link {l.get('id')}: legit links go where they say ({shown} vs {real})")
+                elif "link_mismatch" not in {f.get("type") for f in s.get("redFlags") or [] if isinstance(f, dict)}:
+                    errs.append(f"link {l.get('id')} shows {shown} but goes to {real}: add a link_mismatch redFlag")
         for a in c["attachments"]:
             for k in ("id", "filename"):
                 need(a, k, str, "attachment")
