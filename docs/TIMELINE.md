@@ -10,7 +10,7 @@ Judges look at commit history to check nothing was built before the event. This 
 |---|---|---|---|
 | 11:39 | `6492867` | Repo setup: CI workflow, PR + issue templates, `.gitignore`, `.env.example`, `AGENTS.md`, `CONTRIBUTING.md`, `LICENSE`, README skeleton, `docs/` skeletons, `scripts/sync-frontend.sh` — 17 files | **0 lines** |
 | 12:02 | `c8b6f84` | Deploy + tunnel documentation | 0 lines |
-| *12:02–15:26* | — | *Event kickoff, team formation, planning. No commits.* | — |
+| *14:30* | — | *Event kickoff, team formation, planning. No commits.* | — |
 | 15:26 | `a7a5947` | Project plan: scope, decisions, red-flag taxonomy | 0 lines |
 | **15:34** | `22977d6` | **First application code**: Rust backend skeleton, scenario schema, mock fixtures — 9 files, +1,310 | **+1,310** |
 | 16:07 | `fa0d1a0` | Random mixed rounds + ElevenLabs custom-LLM relay to Gemma 4 — +1,770 | +1,770 |
