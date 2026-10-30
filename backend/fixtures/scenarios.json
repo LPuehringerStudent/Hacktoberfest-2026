@@ -190,6 +190,10 @@
       {
         "type": "process_bypass",
         "evidence": "Please process this immediately via direct bank transfer rather than using the standard invoice portal."
+      },
+      {
+        "type": "link_mismatch",
+        "evidence": "The link shows donauwerk-finance.example but really goes to login.donauwerk-support.example"
       }
     ],
     "safeSignals": [],
@@ -234,6 +238,10 @@
       {
         "type": "process_bypass",
         "evidence": "Asks to update details via email/attachment instead of using the four-eyes approval process in the invoice portal."
+      },
+      {
+        "type": "link_mismatch",
+        "evidence": "The link shows spedition-moser.example but really goes to invoices.donauwerk-portal.example"
       }
     ],
     "safeSignals": [],
@@ -285,6 +293,10 @@
       {
         "type": "process_bypass",
         "evidence": "HR sends policy updates and sensitive info via the intranet, not as macro-enabled attachments"
+      },
+      {
+        "type": "link_mismatch",
+        "evidence": "The link shows intranet.donauwerk.example but really goes to donauwerk-hr.example"
       }
     ],
     "safeSignals": [],
@@ -722,12 +734,12 @@
     "safeSignals": [],
     "correctAction": "report",
     "call": {
-      "callerName": "Lukas Weber",
+      "callerName": "Daniel Hofer",
       "callerId": "+43 732 000 4421",
       "goal": "Convince the employee to update the bank details for Spedition Moser in the system to a fraudulent account.",
       "target": "bank_change",
-      "openingLine": "Hello, this is Lukas from the accounting department at Spedition Moser. I'm calling because we've just updated our IBAN and I need to make sure your next payment doesn't bounce.",
-      "personaPrompt": "You are Lukas, a frantic but polite accountant from Spedition Moser. You claim your company has switched banks and you are calling to ensure Donauwerk Logistik updates your payment details before their afternoon payment run. You must sound helpful but stressed. If the employee asks to call you back or use the official portal, insist that the portal update takes 24 hours and the payment run is happening in 30 minutes, so a quick verbal confirmation is 'much safer' to avoid service interruptions. Never admit it is a scam. Keep every reply to 1-2 short sentences. Never break character.",
+      "openingLine": "Hello, this is Daniel Hofer from the accounting department at Spedition Moser. I'm calling because we've just updated our IBAN and I need to make sure your next payment doesn't bounce.",
+      "personaPrompt": "You are Daniel Hofer, a frantic but polite accountant from Spedition Moser. You claim your company has switched banks and you are calling to ensure Donauwerk Logistik updates your payment details before their afternoon payment run. You must sound helpful but stressed. If the employee asks to call you back or use the official portal, insist that the portal update takes 24 hours and the payment run is happening in 30 minutes, so a quick verbal confirmation is 'much safer' to avoid service interruptions. Never admit it is a scam. Keep every reply to 1-2 short sentences. Never break character.",
       "voiceId": "TODO"
     }
   },
