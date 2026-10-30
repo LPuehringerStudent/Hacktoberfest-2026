@@ -1,0 +1,364 @@
+<!doctype html>
+<!--
+  Tripwire — 2-minute pitch deck (reveal.js 5, single file, no build step).
+
+  Present: open this file in a browser, press F for fullscreen.
+  Script:  the spoken lines + timings are in the speaker notes of each slide
+           (press S for the speaker view), mirrored in docs/presentation.md.
+  Video:   drop the recorded demo next to this file as `demo.mp4` — that is the
+           only placeholder left. Without it the slide shows a dashed "recording"
+           box and nothing breaks.
+
+  Reveal loads from jsDelivr, so this needs a network connection. If the Wi-Fi
+  dies, present from docs/presentation.md and the recording instead.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tripwire — 2-minute pitch</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css">
+
+<style>
+  :root {
+    --bg: #262323;
+    --fg: #f5f2f1;
+    --accent: #e4574a;
+    --muted: #a8a2a1;
+    --line: #4a4443;
+    --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  .reveal-viewport { background: var(--bg); }
+  .reveal { font-family: var(--font-display); color: var(--fg); }
+  .reveal h1, .reveal h2, .reveal h3 { font-family: var(--font-display); font-weight: 700; color: var(--fg); text-transform: none; letter-spacing: -0.02em; }
+  .reveal h1 { font-size: 3.4em; line-height: 0.95; }
+  .reveal h2 { font-size: 2.1em; line-height: 1.05; }
+  .reveal a { color: var(--accent); }
+  .reveal strong { color: inherit; }
+  .reveal .progress span { background: var(--accent); }
+  .reveal .slide-number { background: transparent; color: var(--muted); font-family: var(--font-mono); font-size: 0.42em; }
+
+  .stamp { font-family: var(--font-mono); font-size: 0.42em; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .stamp.accent { color: var(--accent); }
+  .dim { color: var(--muted); }
+  .accent { color: var(--accent); }
+  /* Must out-specify the theme's `.reveal p` / `.reveal h2` margin rules, otherwise
+     the auto margins lose and narrow blocks stick to the left edge. */
+  .reveal .wide { max-width: 20em; margin-left: auto; margin-right: auto; }
+
+  /* Title */
+  .title-word { font-size: 3.6em; font-weight: 700; }
+  .stat-line { font-size: 0.66em; line-height: 1.25; font-weight: 500; color: var(--muted); }
+  .title-word .cursor { color: var(--accent); }
+
+  /* Demo video */
+  /* Fixed size: at width:100% the 16:9 box is 1280x720 and overflows the 720px stage. */
+  .video-frame {
+    position: relative;
+    width: 880px;
+    height: 495px;
+    margin: 0 auto;
+    border: 2px dashed var(--line);
+    border-radius: 6px;
+    background: #1d1b1b;
+    overflow: hidden;
+  }
+  .video-frame video { display: block; width: 100%; height: 100%; object-fit: contain; background: #000; }
+  .video-placeholder {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0.35em; text-align: center; padding: 1em;
+    background: #1d1b1b;
+  }
+  .video-placeholder .big { font-size: 1.5em; font-weight: 700; }
+  .video-placeholder .sub { font-family: var(--font-mono); font-size: 0.4em; color: var(--muted); line-height: 1.6; }
+  .play-overlay {
+    position: absolute; inset: 0; z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.25); border: 0; cursor: pointer; color: var(--fg);
+    font: inherit;
+  }
+  .play-overlay span {
+    display: flex; align-items: center; gap: 0.5em;
+    background: var(--accent); color: #fff; border-radius: 999px;
+    padding: 0.5em 1.1em; font-size: 0.62em; font-weight: 700;
+  }
+  .play-overlay:hover span { filter: brightness(1.08); }
+
+  /* Four challenges */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55em 1.1em; margin-top: 0.5em; }
+  .card { border-top: 2px solid var(--accent); padding-top: 0.35em; text-align: left; }
+  .card .claim { font-size: 0.72em; line-height: 1.15; font-weight: 500; }
+
+  /* Numbers */
+  .big-number { font-size: 3.2em; font-weight: 700; line-height: 1; }
+  .small-list { font-size: 0.5em; color: var(--muted); line-height: 1.9; margin-top: 0.9em; }
+  .small-list b { color: var(--fg); font-weight: 500; }
+
+  /* Live timing */
+  #timer {
+    position: fixed; left: 16px; bottom: 12px; z-index: 40;
+    font-family: var(--font-mono); font-size: 13px; color: var(--muted);
+    opacity: 0.55; pointer-events: none;
+  }
+  #timer.over { color: var(--accent); opacity: 0.95; }
+
+  .notes-hint { position: fixed; right: 16px; top: 12px; z-index: 40;
+    font-family: var(--font-mono); font-size: 11px; color: var(--muted); opacity: 0.35; }
+</style>
+</head>
+<body>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- 1. Title -->
+    <section>
+      <p class="stamp accent">// training_file_07 · social_engineering</p>
+      <div class="title-word">Tripwire<span class="cursor">_</span></div>
+      <h2 class="wide" style="margin-top:.4em">Trust nothing that <em>hurries</em> you.</h2>
+      <p class="stat-line" style="margin-top:.7em"><span class="accent">62%</span> of breaches involve a human being —<br>not a bug in the code.</p>
+      <p class="stamp" style="margin-top:1.1em">Verizon DBIR 2026 · Donauwerk Logistik · Security Desk</p>
+      <aside class="notes">
+        0:00 — HOOK (~30 words, 12s)
+
+        "62% of breaches involve a human being — not a bug in the code.
+         Slideshows don't fix that. So we built a gym for the reflex to stop and
+         check: Tripwire."
+
+        The 62% is real: Verizon's 2026 Data Breach Investigations Report, up from
+        60% the year before. Say "Verizon's breach report" if a judge asks — the
+        number is on the slide so they can check it.
+
+        Do not introduce yourselves or the team at length. The hook is the hello.
+        Advance to the video on the last word.
+      </aside>
+    </section>
+
+    <!-- 2. Demo video: 50 seconds -->
+    <section>
+      <p class="stamp" style="margin-bottom:.5em">Live demo</p>
+      <div class="video-frame" id="video-frame">
+        <!-- Drop the recording here as demo.mp4 -->
+        <video id="demo-video" playsinline preload="metadata" controls>
+          <source src="demo.mp4" type="video/mp4">
+        </video>
+
+        <!-- Hidden unless demo.mp4 is missing or unplayable: the video and the play
+             button are the default so a slow load never leaves a dashed box on screen. -->
+        <div class="video-placeholder" id="video-placeholder" style="display:none">
+          <div class="big">▶ Demo recording missing</div>
+          <div class="sub">
+            save it as <b>demo.mp4</b> next to this file<br>
+            must include the ElevenLabs call audio
+          </div>
+        </div>
+
+        <button class="play-overlay" id="play-overlay" aria-label="Play the demo">
+          <span>▶ Play the demo</span>
+        </button>
+      </div>
+      <aside class="notes">
+        0:12 — VIDEO (50s). SAY NOTHING WHILE IT PLAYS.
+
+        Click "Play" — a real click is what lets the browser play sound. Do not
+        rely on autoplay; Chrome blocks autoplay with audio.
+
+        The deck advances by itself when the video ends. If it fails to start,
+        say nothing about it, press →, and keep going.
+      </aside>
+    </section>
+
+    <!-- 3. Four challenges -->
+    <section>
+      <p class="stamp accent" style="margin-bottom:.2em">Why we qualify · four challenges</p>
+      <div class="grid2">
+        <div class="card">
+          <p class="stamp" style="margin:0">Best Use of Lovable</p>
+          <p class="claim">An inbox anyone can use.<br><span class="dim">Hover a link, see where it really goes.</span></p>
+        </div>
+        <div class="card">
+          <p class="stamp" style="margin:0">Best Open-Source AI</p>
+          <p class="claim">Gemma 4 on our own server.<br><span class="dim">Training data never leaves the building.</span></p>
+        </div>
+        <div class="card">
+          <p class="stamp" style="margin:0">Best Use of Gemma 4</p>
+          <p class="claim">It plays the scammer.<br><span class="dim">Function calling ends the call. JSON validated.</span></p>
+        </div>
+        <div class="card">
+          <p class="stamp" style="margin:0">Best Use of ElevenLabs</p>
+          <p class="claim">It argues back.<br><span class="dim">Push back, ask for a callback — stay in character.</span></p>
+        </div>
+      </div>
+      <aside class="notes">
+        1:02 — FOUR SENTENCES. One each, no elaboration. ~94 words, 40s.
+
+        Lovable:   "Lovable built the whole frontend: an inbox anyone can use with
+                    zero training — hover a link and it shows where it really goes."
+
+        Open AI:   "Every scenario and every caller is Gemma 4 running on our own
+                    server. You can't send your staff's training data to someone
+                    else's cloud."
+
+        Gemma 4:   "Gemma plays the scammer too — it ends the call with a function
+                    call once you've given it what it wants, and JSON validation
+                    means a broken scenario can never ship."
+                    ^ only say the function-calling part if you have SEEN it fire.
+
+        ElevenLabs:"ElevenLabs makes it a real phone call. You can push back, ask
+                    for a callback — and it argues with you."
+      </aside>
+    </section>
+
+    <!-- 4. The hard part -->
+    <section>
+      <p class="stamp accent" style="margin-bottom:.2em">Under the hood</p>
+      <h2 style="margin:.1em 0">Hand-written io_uring server</h2>
+      <div class="big-number accent">1.5–2.3×</div>
+      <p class="stamp" style="margin-top:.2em">faster than our Axum baseline · same routes · one env var</p>
+      <p class="small-list">
+        <b>Answers never reach the browser</b> — stripped server-side at any depth<br>
+        <b>Group-commit event log</b> — 60% clicked the fake login, per scenario
+      </p>
+      <aside class="notes">
+        1:43 — THE HARD PART (~22 words, 11s)
+
+        "Underneath: a hand-written io_uring server, one point five to two point
+         three times faster than our Axum baseline. Same routes, one env var."
+
+        This is the Technology line and nobody else will have one. The two small
+        lines below are reserves — use them only if you are ahead of time, or as
+        answers to "is this mocked?".
+      </aside>
+    </section>
+
+    <!-- 5. Close -->
+    <section>
+      <h2 class="wide" style="margin-top:.2em">Your firewall is fine.<br><span class="accent">Your people need practice.</span></h2>
+      <p class="stamp" style="margin-top:1.4em">hacktober.lpuehringer.dev · github.com/LPuehringerStudent/Hacktoberfest-2026</p>
+      <aside class="notes">
+        1:54 — CLOSE (~10 words)
+
+        "Your firewall is fine. Your people need practice. Thank you."
+
+        Then pause, and advance to the Questions slide. Don't ask "any questions?"
+        out loud — the slide does it for you.
+      </aside>
+    </section>
+
+    <!-- 6. Questions -->
+    <section>
+      <h1 style="margin-bottom:.1em">Questions?</h1>
+      <p class="stamp accent" style="margin-top:1.2em">Thank you</p>
+      <aside class="notes">
+        Leave this up while they ask. Answers you already know:
+
+        "How is this different from KnowBe4?"
+        -> Their sims send real emails with real links to real staff. Ours is one
+           fictional company, only reserved .example domains, no real site ever
+           touched — and it's a phone call, which most trainers can't do.
+
+        "Does the AI decide whether I passed?"
+        -> No. Labels are validated against a Rust schema at generation time and
+           stripped server-side, at any depth, before the payload leaves. Open
+           devtools; the answer isn't there.
+
+        "Won't everyone just click Report?"
+        -> Half the round is legitimate. Reporting a real request costs a point —
+           false alarms score exactly like misses.
+
+        "What was new for you?"
+        -> One concrete thing per person, not "we learned about LLMs".
+           Shape: "I'd never made a model hold a character under real-time
+           streaming constraints." Same four lines belong in the README.
+      </aside>
+    </section>
+
+  </div>
+</div>
+
+<span id="timer">0:00</span>
+<span class="notes-hint">start timer: P · notes: S · fullscreen: F · hide timer: T</span>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/notes/notes.js"></script>
+<script>
+  Reveal.initialize({
+    width: 1280,
+    height: 720,
+    margin: 0.08,
+    hash: true,
+    progress: true,
+    slideNumber: true,
+    transition: 'fade',
+    transitionSpeed: 'fast',
+    plugins: [RevealNotes],
+  });
+
+  const video = document.getElementById('demo-video');
+  const overlay = document.getElementById('play-overlay');
+  const placeholder = document.getElementById('video-placeholder');
+
+  // Video + play button are the default so a slow or picky load still shows something
+  // playable. With <source>, a missing demo.mp4 fires `error` on the <source>, never on
+  // the <video>, which is the only signal we get.
+  const showPlaceholder = () => {
+    video.style.display = 'none';
+    overlay.style.display = 'none';
+    placeholder.style.display = 'flex';
+  };
+  // A missing file can fail during parsing, before this script runs, so the error event
+  // alone is not enough. networkState 3 = NETWORK_NO_SOURCE: every <source> gave up.
+  const checkSource = () => {
+    if (video.networkState === 3) showPlaceholder();
+  };
+  video.querySelector('source').addEventListener('error', showPlaceholder);
+  checkSource();
+  setTimeout(checkSource, 1500);
+
+  // A real click is what lets the browser play audio, so never rely on autoplay.
+  overlay.addEventListener('click', () => {
+    overlay.style.display = 'none';
+    video.play().catch(showPlaceholder);
+  });
+  video.addEventListener('play', () => { overlay.style.display = 'none'; });
+  video.addEventListener('pause', () => { if (!video.ended) overlay.style.display = 'flex'; });
+  video.addEventListener('ended', () => { overlay.style.display = 'none'; Reveal.next(); });
+
+  // Reset the video whenever we leave the slide, so a re-run starts clean.
+  Reveal.on('slidechanged', (event) => {
+    if (!event.currentSlide.contains(video)) {
+      video.pause();
+      video.currentTime = 0;
+    }
+  });
+
+  // Live pitch timer. Press P when you start talking (the hook is spoken on slide 1,
+  // before the first advance, so auto-starting on the title slide would run ~10s late).
+  // Leaving the title slide still starts it, so a forgotten P is not fatal.
+  const timerEl = document.getElementById('timer');
+  let startedAt = null;
+  const startTimer = () => { if (startedAt === null) startedAt = Date.now(); };
+  Reveal.on('slidechanged', () => startTimer());
+  setInterval(() => {
+    if (startedAt === null) return;
+    const seconds = Math.floor((Date.now() - startedAt) / 1000);
+    timerEl.textContent = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
+    timerEl.classList.toggle('over', seconds >= 110);
+  }, 250);
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'p' || event.key === 'P') startTimer();
+    if (event.key === 't' || event.key === 'T') {
+      timerEl.style.display = timerEl.style.display === 'none' ? '' : 'none';
+    }
+  });
+</script>
+</body>
+</html>

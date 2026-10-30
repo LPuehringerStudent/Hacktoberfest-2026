@@ -1,5 +1,7 @@
 # Submission plan
 
+Recording guide: [two-minute demo runbook and verified voice handoff](DEMO.md). Its pending checks do not imply a recording or submission is complete.
+
 Owner: **Dev 3**, but anyone can tick boxes. Submissions go through **OrganizerHQ Challenges** and must link a **public, open-source GitHub repo**.
 
 ## Before the deadline

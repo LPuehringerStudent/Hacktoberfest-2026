@@ -11,7 +11,7 @@
 
 Most breaches start with a person, not a bug. **Tripwire** is a safe simulator where staff of a fictional logistics company, Donauwerk Logistik, work through their inbox and answer their phone. Each email or call is either a normal work request or a scam. You inspect it, decide whether to **do it** or **report it**, and Gemma's debrief shows exactly which red flags you caught.
 
-Built in one day at the **MLH x YAIL Hacktoberfest HackDay** (JKU Linz, 30 Oct 2026).
+Built in one day at the **MLH x YAIL Hacktoberfest HackDay** (JKU Linz, 30 Oct 2026) — [commit-by-commit timeline](docs/TIMELINE.md), including what existed in the repo before the event (scaffolding only, no application code).
 
 ## Demo
 
