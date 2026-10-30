@@ -4,11 +4,16 @@ This is for all 4 of us **and** for any AI agent we run. Agents should also read
 
 ## TL;DR
 
-1. Pick or create a GitHub Issue and assign yourself.
+Board: **https://github.com/users/LPuehringerStudent/projects/13** (views: *Board*, *My work*, *Table*)
+
+1. **Claim** a *Todo* card, highest priority first (P0 → P1 → P2 → Stretch). Assign yourself and move it to **In Progress**. One card per person at a time. Each card has a suggested owner, but anyone can take a free card.
 2. `git switch main && git pull && git switch -c <you>/<topic>`
-3. Commit small, push often, and open a **draft PR** early.
-4. Mark it ready, get one 👍 from anyone, then **squash-merge**. Delete the branch.
-5. Pull `main` often. Merge `main` into your branch rather than force-pushing.
+3. Commit small, push often, and open a **draft PR** early with `Closes #<issue>` in the description.
+4. When it's ready: mark the PR ready, move the card to **In Review**, and ask someone for a review.
+5. 1 approval + green CI (`secrets`, `backend`) → **squash-merge**. The issue closes and the card goes to **Done**. **Merging deploys the backend** within about a minute.
+6. Pull `main` often. Merge `main` into your branch rather than force-pushing.
+
+New work you discover? Create an issue (template: *Task*), add it to the board with a priority, and leave it in *Todo* unless you take it now.
 
 ## Roles
 
