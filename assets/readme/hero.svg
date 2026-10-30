@@ -1,71 +1,33 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="440" viewBox="0 0 1200 440" role="img" aria-labelledby="title desc">
-  <title id="title">Phishing Dojo</title>
-  <desc id="desc">Phishing Dojo: spot the scam in your inbox and on the phone. Beside the title, a real scam email written by Gemma 4 with its four red flags highlighted: sender mismatch, payment change, urgency and a link whose real target differs from its text.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+  <title id="title">Tripwire</title>
+  <desc id="desc">Tripwire: trust nothing that hurries you. A scam-awareness simulator with phishing emails and live AI phone calls, written by Gemma 4 and voiced by ElevenLabs.</desc>
 
-  <rect width="1200" height="440" rx="24" fill="#F5F3EE"/>
+  <defs>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#FFFFFF" fill-opacity="0.07"/>
+    </pattern>
+    <radialGradient id="glow" cx="0.1" cy="0" r="0.9">
+      <stop offset="0" stop-color="#E5283F" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#E5283F" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
 
-  <g id="title-block" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
-    <text x="56" y="84" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16" letter-spacing="1.5" fill="#6B6862">SECURITY-AWARENESS SIMULATOR</text>
-    <text x="54" y="156" font-size="68" font-weight="800" letter-spacing="-2" fill="#141414">Phishing Dojo</text>
-    <text x="56" y="202" font-size="25" fill="#141414">Spot the scam in your inbox and on</text>
-    <text x="56" y="234" font-size="25" fill="#141414">the phone, before it's real.</text>
+  <rect width="1200" height="360" rx="24" fill="#0F0D0D"/>
+  <rect width="1200" height="360" rx="24" fill="url(#glow)"/>
+  <rect width="1200" height="360" rx="24" fill="url(#dots)"/>
 
-    <g id="debrief" transform="translate(56 278)">
-      <text x="0" y="0" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16" letter-spacing="1.5" fill="#6B6862">DEBRIEF · WRITTEN BY GEMMA 4</text>
-      <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="19" fill="#141414">
-        <circle cx="11" cy="30" r="11" fill="#D62839"/><text x="11" y="36" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">1</text>
-        <text x="34" y="37">sender_mismatch</text>
-        <circle cx="241" cy="30" r="11" fill="#D62839"/><text x="241" y="36" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">2</text>
-        <text x="264" y="37">payment_change</text>
-        <circle cx="11" cy="70" r="11" fill="#D62839"/><text x="11" y="76" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">3</text>
-        <text x="34" y="77">urgency</text>
-        <circle cx="241" cy="70" r="11" fill="#D62839"/><text x="241" y="76" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">4</text>
-        <text x="264" y="77">link_mismatch</text>
-      </g>
-      <text x="0" y="124" font-size="18" fill="#6B6862">Correct answer: <tspan font-weight="700" fill="#141414">Report</tspan></text>
-    </g>
+  <g id="title-block" font-family="'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+    <text x="64" y="74" font-size="30" font-weight="700" fill="#F4F1EF">Tripwire<tspan fill="#E5283F">_</tspan></text>
+    <text x="214" y="73" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16" letter-spacing="2" fill="#9A9391">DONAUWERK LOGISTIK · SECURITY DESK</text>
+
+    <text x="64" y="132" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" letter-spacing="1.5" fill="#E5283F">// TRAINING_FILE_07 · SOCIAL_ENGINEERING</text>
+    <text x="60" y="214" font-size="72" font-weight="700" letter-spacing="-2" fill="#F4F1EF">Trust nothing that <tspan font-style="italic" fill="#E5283F">hurries</tspan> you.</text>
+
+    <text x="64" y="264" font-size="24" fill="#B9B2B0">Phishing emails and live AI scam calls, in a safe simulator.</text>
+    <text x="64" y="296" font-size="24" fill="#B9B2B0">Inspect, decide: do it or report it. Then see every red flag.</text>
   </g>
 
-  <g id="project-proof" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
-    <rect x="566" y="40" width="590" height="360" rx="16" fill="#FFFFFF" stroke="#DAD6CC" stroke-width="1.5"/>
-
-    <text x="594" y="80" font-size="20" font-weight="700" fill="#141414">Spedition Moser Billing</text>
-    <g id="actions" font-size="17" font-weight="600">
-      <rect x="958" y="58" width="74" height="32" rx="16" fill="none" stroke="#141414" stroke-width="1.5"/>
-      <text x="995" y="80" text-anchor="middle" fill="#141414">Do it</text>
-      <rect x="1040" y="58" width="90" height="32" rx="16" fill="#141414"/>
-      <text x="1085" y="80" text-anchor="middle" fill="#FFFFFF">Report</text>
-    </g>
-
-    <rect x="590" y="91" width="418" height="26" rx="4" fill="#D62839" fill-opacity="0.14"/>
-    <text x="594" y="110" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#141414">billing@spedition-moser-office.example</text>
-    <circle cx="1026" cy="104" r="11" fill="#D62839"/><text x="1026" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">1</text>
-
-    <text x="594" y="150" font-size="20" font-weight="700" fill="#141414">URGENT: Change of Bank Details</text>
-    <line x1="594" y1="166" x2="1128" y2="166" stroke="#E7E3DA" stroke-width="1.5"/>
-
-    <g font-size="19" fill="#2B2A28">
-      <text x="594" y="198">Spedition Moser has a new banking partner.</text>
-      <rect x="590" y="210" width="360" height="27" rx="4" fill="#D62839" fill-opacity="0.14"/>
-      <text x="594" y="230">Please update our IBAN in your system</text>
-      <circle cx="968" cy="223" r="11" fill="#D62839"/><text x="968" y="229" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">2</text>
-      <rect x="590" y="241" width="320" height="27" rx="4" fill="#D62839" fill-opacity="0.14"/>
-      <text x="594" y="261"><tspan font-weight="700">before the Friday payment run.</tspan></text>
-      <circle cx="928" cy="254" r="11" fill="#D62839"/><text x="928" y="260" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">3</text>
-      <text x="594" y="296" fill="#1F5FBF" text-decoration="underline">Download the updated invoice details</text>
-    </g>
-
-    <g id="hover">
-      <path d="M622 306 l10 -8 l10 8 z" fill="#141414"/>
-      <rect x="594" y="306" width="440" height="36" rx="8" fill="#141414"/>
-      <text x="610" y="330" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#FFFFFF">invoices.donauwerk-portal.example</text>
-      <circle cx="1052" cy="324" r="11" fill="#D62839"/><text x="1052" y="330" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">4</text>
-    </g>
-
-    <g id="attachment">
-      <rect x="594" y="354" width="256" height="30" rx="6" fill="#F5F3EE" stroke="#DAD6CC"/>
-      <text x="606" y="375" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" font-weight="700" fill="#D62839">PDF</text>
-      <text x="644" y="375" font-size="17" fill="#2B2A28">Moser_Bank_Details.pdf</text>
-    </g>
+  <g id="metadata" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16" letter-spacing="1.5" fill="#9A9391">
+    <text x="1136" y="74" text-anchor="end">GEMMA 4 · ELEVENLABS · LOVABLE</text>
   </g>
 </svg>
