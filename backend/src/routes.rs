@@ -248,7 +248,7 @@ pub async fn stats(State(state): State<AppState>) -> Result<Json<Value>, ApiErro
             })
         })
         .collect();
-    scenarios.sort_by(|a, b| b.decisions.cmp(&a.decisions));
+    scenarios.sort_by_key(|s| std::cmp::Reverse(s.decisions));
 
     let sum = |f: fn(&ScenarioStats) -> u64| scenarios.iter().map(f).sum::<u64>();
     let (decisions, correct) = (sum(|s| s.decisions), sum(|s| s.correct));
