@@ -169,7 +169,7 @@ Benchmark of Gemma 4 26B A4B Q4_0 on the R740 CPU (llama.cpp, one NUMA node), **
 | 16 | 60 tok/s | **11.6 tok/s** (~8 words/s) |
 | 32 | 77 tok/s | 6.1 tok/s (contention with Tarock) |
 
-End-to-end relay test with the real model (15:55, llama-server, persona prompt + `end_call` tool): Gemma 4 **stayed in character without refusing**, asked for the MFA code, and called `end_call` after getting it. But the first word took **44 s** (cold prompt) and 16 s on the next turn, so **live calls must use the Gemini API**. Local is only a README talking point.
+End-to-end relay test with the real model (15:55, llama-server, persona prompt + `end_call` tool): Gemma 4 **stayed in character without refusing**, asked for the MFA code, and called `end_call` after getting it. The first test took 44 s to the first word, because Gemma 4 *thinks* (hidden reasoning tokens) before speaking. **With thinking off** (`chat_template_kwargs.enable_thinking=false`, set by the relay) a 3-turn call measured **1.8–3.9 s to first word, 4.8–6.4 s per full reply**, with Tarock training. **Decision (16:05): Gemma 4 is self-hosted** on the R740 as the `hacktober-gemma` service (llama-server, 16 threads, 2 parallel calls, prompt cache). The Gemini API is only a fallback (`MODEL_BASE_URL`).
 
 A 30-token call reply takes ~2.6 s to write. An uncached 1,500-token persona prompt would take ~25 s to read, so **the prompt cache is mandatory** for local calls (only the new turn gets read). Pausing Tarock for the demo should help. Not measured yet.
 

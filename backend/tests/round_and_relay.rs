@@ -140,6 +140,10 @@ async fn relay_injects_persona_and_streams() {
     assert!(sent.get("elevenlabs_extra_body").is_none());
     assert!(sent.get("user_id").is_none());
     assert_eq!(
+        sent["chat_template_kwargs"]["enable_thinking"], false,
+        "thinking off for self-hosted"
+    );
+    assert_eq!(
         sent["tools"][0]["function"]["name"], "end_call",
         "tools pass through"
     );

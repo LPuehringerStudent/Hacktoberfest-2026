@@ -77,6 +77,14 @@ pub async fn chat_completions(
     obj.remove("elevenlabs_extra_body");
     obj.remove("user_id");
     obj.insert("model".into(), json!(cfg.model));
+    if !cfg.base_url.contains("googleapis.com") {
+        // Self-hosted llama-server: Gemma 4 thinks for 100+ tokens before speaking unless told not to,
+        // which on CPU means ~40 s of silence on the phone
+        obj.insert(
+            "chat_template_kwargs".into(),
+            json!({ "enable_thinking": false }),
+        );
+    }
     let messages = obj
         .get_mut("messages")
         .and_then(Value::as_array_mut)
