@@ -2,6 +2,7 @@ pub mod db;
 pub mod relay;
 pub mod routes;
 pub mod scenario;
+pub mod uring;
 
 use std::{
     sync::{Arc, atomic::AtomicU64},
