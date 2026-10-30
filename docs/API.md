@@ -128,7 +128,7 @@ conversation.startSession({
 });
 ```
 
-When the call ends: **Hang up & report** → `POST /api/scenario/{id}/decision` `{ "action": "report" }`. Ended by the agent → `{ "action": "comply" }`. Show the returned debrief.
+When the call ends: **Hang up & report** → `POST /api/scenario/{id}/decision` `{ "action": "report" }`. If the agent ends the call (`end_call`), **no decision is sent automatically**: the user still picks **Report** or **Comply**, because the agent may also hang up after a correct refusal. Show the returned debrief.
 
 ### `GET /api/stats` (live)
 
