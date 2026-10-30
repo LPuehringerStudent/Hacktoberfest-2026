@@ -36,6 +36,10 @@ Domain `lpuehringer.dev` is on Cloudflare (DNS owned by Laurenz).
 
 - Use `hacktober-api.…`, not `api.hacktober.…`. Cloudflare's free certificate only covers one subdomain level.
 
+### Gemma 4 (self-hosted)
+
+`hacktober-gemma` service on the same server: llama-server with Gemma 4 26B A4B Q4_0 on CPU, `127.0.0.1:8080`, 2 parallel slots. The backend uses it via `MODEL_BASE_URL=http://127.0.0.1:8080/v1`. No cloud AI is needed. The model file lives in `/dev/shm` (RAM), so after a server reboot it must be downloaded again (see `docs/PLAN.md`). For the demo, pause Tarock training (`ssh r740 'tarock-pause pause hackathon'`) for snappier replies.
+
 ### Autodeploy
 
 The server polls GitHub every 30 s. When `main` moves, it runs `git reset --hard origin/main`, `cargo build --release` in `backend/`, restarts the backend, and checks `GET /health`. So **merging a PR deploys it** within about a minute. A broken `main` means a broken demo backend, so CI and review matter.

@@ -16,7 +16,7 @@ use crate::{
 
 const ROUND_SIZE: usize = 5;
 
-pub struct ApiError(StatusCode, String);
+pub struct ApiError(pub StatusCode, pub String);
 
 impl IntoResponse for ApiError {
     fn into_response(self) -> Response {
@@ -24,7 +24,7 @@ impl IntoResponse for ApiError {
     }
 }
 
-fn find<'a>(state: &'a AppState, id: &str) -> Result<&'a Scenario, ApiError> {
+pub fn find<'a>(state: &'a AppState, id: &str) -> Result<&'a Scenario, ApiError> {
     state
         .scenarios
         .iter()
@@ -50,15 +50,10 @@ pub struct Round {
     scenarios: Vec<RoundRef>,
 }
 
-// TODO(#pool): draw from the generated scenario pool instead of the fixtures.
 pub async fn new_round(State(state): State<AppState>) -> Json<Round> {
     let n = state.rounds.fetch_add(1, Ordering::Relaxed);
-    let scenarios = state
-        .scenarios
-        .iter()
-        .cycle()
-        .skip(n as usize % state.scenarios.len())
-        .take(ROUND_SIZE.min(state.scenarios.len()))
+    let scenarios = pick_round(&state.scenarios, ROUND_SIZE)
+        .into_iter()
         .map(|s| RoundRef {
             id: s.id.clone(),
             channel: s.channel,
@@ -68,6 +63,33 @@ pub async fn new_round(State(state): State<AppState>) -> Json<Round> {
         round_id: format!("rd_{n}"),
         scenarios,
     })
+}
+
+/// Random scenarios: at least one call (if any exist), and 2 or 3 scams out of 5.
+pub fn pick_round(pool: &[Scenario], size: usize) -> Vec<&Scenario> {
+    let mut left: Vec<&Scenario> = pool.iter().collect();
+    fastrand::shuffle(&mut left);
+    let size = size.min(left.len());
+    let want_scams = (size + fastrand::usize(0..=1)) / 2;
+
+    let mut picked = Vec::with_capacity(size);
+    if let Some(i) = left.iter().position(|s| s.channel == Channel::Call) {
+        picked.push(left.remove(i));
+    }
+    // First pass steers towards the scam target, second fills with whatever is left
+    for strict in [true, false] {
+        let mut i = 0;
+        while picked.len() < size && i < left.len() {
+            let scams = picked.iter().filter(|s| s.is_scam).count();
+            if !strict || left[i].is_scam == (scams < want_scams) {
+                picked.push(left.remove(i));
+            } else {
+                i += 1;
+            }
+        }
+    }
+    fastrand::shuffle(&mut picked);
+    picked
 }
 
 pub async fn get_scenario(
