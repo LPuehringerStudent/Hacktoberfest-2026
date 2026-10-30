@@ -1,0 +1,60 @@
+TRIPWIRE — 2-MINUTE PITCH
+Everything you say, in order. Read it once out loud with a stopwatch.
+
+--------------------------------------------------------------------
+
+[0:00]  (hook — look at the judges, not the screen)
+
+    62% of breaches involve a human being — not a bug in the code.
+    Slideshows don't fix that. So we built a gym for the reflex to
+    stop and check: Tripwire.
+
+
+[0:12]  (PRESS PLAY. SAY NOTHING WHILE THE VIDEO RUNS.)
+
+    >>>  50-SECOND VIDEO  <<<
+
+
+[1:02]  (four challenges — one sentence each, no elaboration)
+
+    Lovable built the whole frontend: an inbox anyone can use with
+    zero training — hover a link and it shows where it really goes.
+
+    Every scenario and every caller is Gemma 4 running on our own
+    server. You can't send your staff's training data to someone
+    else's cloud.
+
+    Gemma plays the scammer too — it ends the call with a function
+    call once you've given it what it wants, and JSON validation
+    means a broken scenario can never ship.
+
+    ElevenLabs makes it a real phone call. You can push back, ask
+    for a callback — and it argues with you.
+
+
+[1:43]  (the hard part)
+
+    Underneath: a hand-written io_uring server, one point five to
+    two point three times faster than our Axum baseline. Same
+    routes, one env var.
+
+
+[1:54]  (close)
+
+    Your firewall is fine. Your people need practice. Thank you.
+
+
+[2:00]  (STOP. Advance to the Questions? slide. Don't say "any
+         questions?" — let the silence do it.)
+
+--------------------------------------------------------------------
+
+IF YOU RUN LONG: drop the io_uring paragraph. Never the 62%.
+
+IF A JUDGE ASKS where 62% comes from: Verizon's 2026 Data Breach
+Investigations Report — 62% of breaches involve the human element.
+It's printed on the slide.
+
+ONLY SAY the "function call" sentence if you have seen the caller
+actually hang up on its own. If not, say "and it gets you off the
+phone when it's done" instead.
