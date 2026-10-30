@@ -191,6 +191,17 @@ Default until the numbers arrive:
 | io_uring, 4 workers | 512 | 126,000 | 8.3 ms |
 | io_uring, 16 workers | 512 | 296,900 | 5.3 ms |
 
+**After the inline fast path (17:20):** requests that finish without waiting run right on the ring thread (no Tokio hop, no eventfd); only the call relay and stats go to Tokio.
+
+| Server | Concurrency | `GET /health` req/s | p99 | `POST /api/round` req/s |
+|---|---|---|---|---|
+| Axum (re-measured) | 64 | 118,200 | 1.8 ms | |
+| **io_uring inline, 16 workers** | 64 | **275,700 (2.3×)** | 1.1 ms | 250,900 |
+| Axum (re-measured) | 512 | 327,000 | 5.3 ms | |
+| **io_uring inline, 16 workers** | 512 | **499,100 (1.5×)** | 4.4 ms | 393,200 |
+
+With 16 threads against Axum's 64, our server now does 1.5–2.3× the requests with lower tail latency.
+
 `POST /api/round` gives the same numbers. The first run found a bug: ~42 ms per response on io_uring (Nagle + delayed ACK between the separate header and body sends). Fixed with `TCP_NODELAY` and coalescing queued pieces into one send, a **60–80× improvement**. Our hand-written io_uring server is in the same league as Axum/Tokio, ahead at 64 connections with 16 workers. The live server runs 16 workers.
 
 ## Risks
