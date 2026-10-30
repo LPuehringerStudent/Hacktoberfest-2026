@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-labelledby="title desc">
+  <title id="title">How Phishing Dojo works</title>
+  <desc id="desc">Four steps: Gemma 4 writes labelled scenarios; the trainee works through emails in the Lovable inbox and live ElevenLabs calls; they choose do it or report; the debrief shows every red flag with its evidence.</desc>
+
+  <rect width="1200" height="300" rx="24" fill="#F5F3EE"/>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+    <g id="step-1" transform="translate(48 48)">
+      <rect width="246" height="204" rx="14" fill="#FFFFFF" stroke="#DAD6CC" stroke-width="1.5"/>
+      <text x="22" y="40" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#6B6862">01 · GEMMA 4</text>
+      <text x="22" y="82" font-size="24" font-weight="700" fill="#141414">Writes the</text>
+      <text x="22" y="112" font-size="24" font-weight="700" fill="#141414">scenarios</text>
+      <text x="22" y="152" font-size="18" fill="#2B2A28">Scams + real requests,</text>
+      <text x="22" y="178" font-size="18" fill="#2B2A28">schema-checked JSON</text>
+    </g>
+    <path d="M304 150 h22 m-8 -8 l8 8 l-8 8" fill="none" stroke="#141414" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <g id="step-2" transform="translate(336 48)">
+      <rect width="246" height="204" rx="14" fill="#FFFFFF" stroke="#DAD6CC" stroke-width="1.5"/>
+      <text x="22" y="40" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#6B6862">02 · UI + VOICE</text>
+      <text x="22" y="82" font-size="24" font-weight="700" fill="#141414">Inbox and</text>
+      <text x="22" y="112" font-size="24" font-weight="700" fill="#141414">live calls</text>
+      <text x="22" y="152" font-size="18" fill="#2B2A28">Hover links, open files,</text>
+      <text x="22" y="178" font-size="18" fill="#2B2A28">talk to the AI caller</text>
+    </g>
+    <path d="M592 150 h22 m-8 -8 l8 8 l-8 8" fill="none" stroke="#141414" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <g id="step-3" transform="translate(624 48)">
+      <rect width="246" height="204" rx="14" fill="#FFFFFF" stroke="#DAD6CC" stroke-width="1.5"/>
+      <text x="22" y="40" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#6B6862">03 · YOU</text>
+      <text x="22" y="82" font-size="24" font-weight="700" fill="#141414">Do it or</text>
+      <text x="22" y="112" font-size="24" font-weight="700" fill="#141414">report it</text>
+      <g font-size="17" font-weight="600">
+        <rect x="22" y="140" width="80" height="34" rx="17" fill="none" stroke="#141414" stroke-width="1.5"/>
+        <text x="62" y="163" text-anchor="middle" fill="#141414">Do it</text>
+        <rect x="112" y="140" width="96" height="34" rx="17" fill="#141414"/>
+        <text x="160" y="163" text-anchor="middle" fill="#FFFFFF">Report</text>
+      </g>
+    </g>
+    <path d="M880 150 h22 m-8 -8 l8 8 l-8 8" fill="none" stroke="#141414" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <g id="step-4" transform="translate(912 48)">
+      <rect width="240" height="204" rx="14" fill="#FFFFFF" stroke="#D62839" stroke-width="2"/>
+      <text x="22" y="40" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#D62839">04 · DEBRIEF</text>
+      <text x="22" y="82" font-size="24" font-weight="700" fill="#141414">Every red flag,</text>
+      <text x="22" y="112" font-size="24" font-weight="700" fill="#141414">with evidence</text>
+      <rect x="18" y="135" width="156" height="26" rx="4" fill="#D62839" fill-opacity="0.14"/>
+      <text x="22" y="154" font-size="18" fill="#2B2A28">"before Friday"</text>
+      <circle cx="190" cy="148" r="11" fill="#D62839"/><text x="190" y="154" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">!</text>
+      <text x="22" y="186" font-size="18" fill="#2B2A28">+ score per round</text>
+    </g>
+  </g>
+</svg>
