@@ -11,7 +11,7 @@ use serde_json::{Value, json};
 
 use crate::{
     AppState,
-    scenario::{Action, Channel, RedFlag, Scenario},
+    scenario::{Action, Channel, RedFlag, RedFlagType, Scenario},
 };
 
 const ROUND_SIZE: usize = 5;
@@ -136,60 +136,132 @@ pub enum DecisionAction {
 #[derive(Deserialize)]
 pub struct Decision {
     pub action: DecisionAction,
+    /// Optional: event types the client saw for this scenario (e.g. "hover_link"), so the debrief can
+    /// credit what the user noticed even if they still went ahead.
+    #[serde(default)]
+    pub observed: Vec<String>,
+}
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Tip {
+    #[serde(rename = "type")]
+    kind: RedFlagType,
+    tip: &'static str,
 }
 
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Debrief {
-    correct: bool,
+    pub correct: bool,
     is_scam: bool,
     correct_action: Action,
     red_flags: Vec<RedFlag>,
     caught: Vec<RedFlag>,
     missed: Vec<RedFlag>,
+    /// Flags the user noticed (e.g. hovered the fake link) but still went ahead.
+    noticed: Vec<RedFlag>,
     safe_signals: Vec<String>,
     explanation: String,
+    /// What to watch for next time, one per missed red flag.
+    tips: Vec<Tip>,
 }
 
-// TODO(#debrief): per-flag caught/missed from the event log + Gemma-written explanation.
-pub async fn decide(
-    State(state): State<AppState>,
-    Path(id): Path<String>,
-    Json(decision): Json<Decision>,
-) -> Result<Json<Debrief>, ApiError> {
-    let s = find(&state, &id)?;
-    let reported = decision.action == DecisionAction::Report;
-    let correct = reported == s.is_scam;
-    if let Some(log) = &state.events {
-        log.record(
-            &id,
-            "decision",
-            &json!({ "action": decision.action, "correct": correct }),
-        );
+pub fn tip(kind: RedFlagType) -> &'static str {
+    match kind {
+        RedFlagType::Urgency => {
+            "Real requests rarely need action within minutes. Time pressure is the tool: slow down."
+        }
+        RedFlagType::Authority => {
+            "A big title (CEO, IT, bank) is easy to fake. Verify through a channel you already know."
+        }
+        RedFlagType::CredentialRequest => {
+            "IT never asks for your password or MFA code, by phone or email."
+        }
+        RedFlagType::PaymentChange => {
+            "Confirm new bank details by calling the supplier back on the number already on file."
+        }
+        RedFlagType::SenderMismatch => "Check the real address or number, not the display name.",
+        RedFlagType::LinkMismatch => {
+            "Hover before you click: where the link really goes is what counts."
+        }
+        RedFlagType::RiskyAttachment => {
+            "Never enable macros. Double extensions like .pdf.exe are a red flag."
+        }
+        RedFlagType::Secrecy => {
+            "\"Keep this between us\" is a classic scam line. Real requests survive a second opinion."
+        }
+        RedFlagType::ProcessBypass => {
+            "Skipping the ticket, the callback or four-eyes approval is exactly what attackers want."
+        }
     }
-    let (caught, missed) = if reported {
+}
+
+/// Red flags a client-side signal proves the user looked at.
+fn noticed_by(kind: RedFlagType, observed: &[String]) -> bool {
+    matches!(kind, RedFlagType::LinkMismatch) && observed.iter().any(|o| o == "hover_link")
+}
+
+pub fn debrief(s: &Scenario, action: DecisionAction, observed: &[String]) -> Debrief {
+    let reported = action == DecisionAction::Report;
+    let correct = reported == s.is_scam;
+    let (caught, missed): (Vec<RedFlag>, Vec<RedFlag>) = if reported {
         (s.red_flags.clone(), vec![])
     } else {
         (vec![], s.red_flags.clone())
     };
+    let noticed: Vec<RedFlag> = missed
+        .iter()
+        .filter(|f| noticed_by(f.kind, observed))
+        .cloned()
+        .collect();
     let explanation = match (s.is_scam, correct) {
-        (true, true) => "Well spotted: this was a scam.",
-        (true, false) => "This was a scam. Look at the red flags you missed.",
-        (false, true) => "Correct: this was a normal request.",
+        (true, true) => "Well spotted: this was a scam.".to_owned(),
+        (true, false) if !noticed.is_empty() => {
+            "This was a scam. You noticed something was off, but still went ahead: trust that feeling and report it.".to_owned()
+        }
+        (true, false) => "This was a scam. Look at the red flags you missed.".to_owned(),
+        (false, true) => "Correct: this was a normal request.".to_owned(),
         (false, false) => {
-            "This one was legitimate. Reporting real requests slows colleagues down too."
+            "This one was legitimate. Reporting real requests slows colleagues down too.".to_owned()
         }
     };
-    Ok(Json(Debrief {
+    let tips = missed
+        .iter()
+        .map(|f| Tip {
+            kind: f.kind,
+            tip: tip(f.kind),
+        })
+        .collect();
+    Debrief {
         correct,
         is_scam: s.is_scam,
         correct_action: s.correct_action,
         red_flags: s.red_flags.clone(),
         caught,
         missed,
+        noticed,
         safe_signals: s.safe_signals.clone(),
-        explanation: explanation.into(),
-    }))
+        explanation,
+        tips,
+    }
+}
+
+pub async fn decide(
+    State(state): State<AppState>,
+    Path(id): Path<String>,
+    Json(decision): Json<Decision>,
+) -> Result<Json<Debrief>, ApiError> {
+    let s = find(&state, &id)?;
+    let d = debrief(s, decision.action, &decision.observed);
+    if let Some(log) = &state.events {
+        log.record(
+            &id,
+            "decision",
+            &json!({ "action": decision.action, "correct": d.correct }),
+        );
+    }
+    Ok(Json(d))
 }
 
 #[derive(Serialize)]
