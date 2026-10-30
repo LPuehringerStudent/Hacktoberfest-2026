@@ -1,4 +1,4 @@
-use backend::{AppState, app};
+use backend::{AppState, app, db::EventLog};
 use tracing_subscriber::EnvFilter;
 
 #[tokio::main]
@@ -18,11 +18,21 @@ async fn main() {
         .filter(|s| !s.is_empty())
         .collect();
 
+    let db_path = std::env::var("DB_PATH").unwrap_or_else(|_| "hacktober.db".into());
+    let mut state = AppState::with_fixtures();
+    match EventLog::open(std::path::Path::new(&db_path)) {
+        Ok(log) => {
+            tracing::info!(%db_path, "event log open");
+            state = state.with_event_log(log);
+        }
+        Err(e) => tracing::error!(%db_path, error = %e, "event log disabled"),
+    }
+
     let listener = tokio::net::TcpListener::bind(format!("{host}:{port}"))
         .await
         .expect("bind");
     tracing::info!("listening on http://{}", listener.local_addr().unwrap());
-    axum::serve(listener, app(AppState::with_fixtures(), origins))
+    axum::serve(listener, app(state, origins))
         .with_graceful_shutdown(shutdown())
         .await
         .unwrap();

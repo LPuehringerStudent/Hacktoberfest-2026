@@ -5,6 +5,9 @@
 
 # Rust
 target/
+*.db
+*.db-wal
+*.db-shm
 
 # Python
 __pycache__/

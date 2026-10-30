@@ -64,7 +64,7 @@ Call:
   "call": { "callerName": "Markus, IT Security", "callerId": "+43 732 000 1234", "openingLine": "Hi, Markus from IT security here. …", "voiceId": "…" } }
 ```
 
-### `POST /api/scenario/{id}/event` (mock: logged, not stored yet) → `204`
+### `POST /api/scenario/{id}/event` (live: stored in SQLite) → `204`
 
 ```json
 { "type": "hover_link", "detail": { "linkId": "l1" } }
@@ -130,10 +130,22 @@ conversation.startSession({
 
 When the call ends: **Hang up & report** → `POST /api/scenario/{id}/decision` `{ "action": "report" }`. Ended by the agent → `{ "action": "comply" }`. Show the returned debrief.
 
+### `GET /api/stats` (live)
+
+Aggregates from the event log, for a live stats panel ("60% clicked the fake login link"). `storage` shows the group commit at work: events per SQLite transaction.
+
+```json
+{
+  "totals": { "decisions": 12, "correct": 9, "correctRate": 0.75, "fellForIt": 2 },
+  "storage": { "events": 64, "commits": 9, "eventsPerCommit": 7.1 },
+  "scenarios": [{ "id": "fx_email_m365", "channel": "email", "isScam": true, "title": "Action required: …",
+                  "opens": 5, "hoveredLink": 3, "clickedLink": 2, "decisions": 5, "correct": 3, "fellForIt": 2 }]
+}
+```
+
 ### Planned
 
 | Endpoint | Purpose |
 |---|---|
 | `GET /api/call/{id}/debrief` | Debrief after a call (outcome from Gemma's tool calls + transcript), same shape as the decision response |
 | `POST /api/check-email` | Multipart screenshot → `{ verdict, redFlags: [{ type, evidence }] }` |
-| `GET /api/stats` | Aggregates from the event log |
