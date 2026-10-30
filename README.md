@@ -9,6 +9,9 @@
   <a href="#run-it-locally">Run it locally</a>
 </p>
 
+> 🏆 **Winner of 2 of 4 prize categories at MLH x YAIL Hacktoberfest HackDay**, the only team to win more than one:
+> **Best Use of Gemma 4** and **Best Open-Source AI Project** (DigitalOcean).
+
 Most breaches start with a person, not a bug. **Tripwire** is a safe simulator where staff of a fictional company work through their inbox and answer their phone. Each email or call is either a normal work request or a scam. You decide whether to **do it** or **report it**, and the debrief shows exactly which red flags you caught or missed.
 
 Built in one day at the **MLH x YAIL Hacktoberfest HackDay** (JKU Linz, 30 Oct 2026) — [commit-by-commit timeline](docs/TIMELINE.md), including what existed in the repo before the event (scaffolding only, no application code).
@@ -48,12 +51,12 @@ python3 scripts/generate_scenarios.py      # optional: regenerate the scenarios 
 
 For a self-hosted Gemma 4, run `llama-server` with the GGUF weights and set `MODEL_BASE_URL=http://127.0.0.1:8080/v1`. Frontend: [`frontend/README.md`](frontend/README.md).
 
-## Challenges we're entering
+## Challenges we entered
 
 | Challenge | How this project qualifies |
 |---|---|
-| **Best Open-Source AI Project** (DigitalOcean) | Open-weight Gemma 4 writes every scenario and plays every caller; without it there is no app. MIT-licensed, public repo. Gemma 4 26B A4B also runs on our own CPU server with llama.cpp (Q4_0, ~11.6 tokens/s, [benchmark](docs/PLAN.md#model-hosting)); switching is one env var. |
-| **Best Use of Gemma 4** | `gemma-4-26b-a4b-it` with system instructions (company fact sheet, training framing), structured JSON validated against a typed schema with a self-correction loop, and real-time role-play as phone personas. <!-- TODO: function calling (end_call), if it works in the demo --> |
+| 🏆 **Best Open-Source AI Project** (DigitalOcean), **won** | Open-weight Gemma 4 writes every scenario and plays every caller; without it there is no app. MIT-licensed, public repo. Gemma 4 26B A4B also runs on our own CPU server with llama.cpp (Q4_0, ~11.6 tokens/s, [benchmark](docs/PLAN.md#model-hosting)); switching is one env var. |
+| 🏆 **Best Use of Gemma 4**, **won** | `gemma-4-26b-a4b-it` with system instructions (company fact sheet, training framing), structured JSON validated against a typed schema with a self-correction loop, and real-time role-play as phone personas. <!-- TODO: function calling (end_call), if it works in the demo --> |
 | **Best Use of ElevenLabs** | Half of the training is live calls: a voice agent you can actually argue with, driven by Gemma through our backend. |
 | **Best Use of Lovable** | The whole frontend (inbox, link hover, landing pages, attachment previews, call screen, debrief) is built in Lovable: <!-- TODO: Lovable repo URL -->. Mirrored into [`frontend/`](frontend/). |
 
