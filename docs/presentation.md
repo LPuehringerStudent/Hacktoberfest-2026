@@ -10,11 +10,13 @@ Judges score **Technology, Design, Completion, Learning**, equally weighted. The
 
 | Time | What | Spoken words |
 |---|---|---|
-| 0:00–0:10 | Hook | 23 |
-| 0:10–1:00 | Demo video, 50 s — **you stay silent** | — |
-| 1:00–1:41 | Four challenges, one sentence each | 94 |
-| 1:41–1:52 | The hard part (io_uring) | 22 |
-| 1:52–2:00 | Close | 10 |
+| 0:00–0:12 | Hook + the 62% | 30 |
+| 0:12–1:02 | Demo video, 50 s — **you stay silent** | — |
+| 1:02–1:43 | Four challenges, one sentence each | 94 |
+| 1:43–1:54 | The hard part (io_uring) | 22 |
+| 1:54–2:00 | Close | 10 |
+
+The 62% costs you two seconds, so this now lands right on 2:00. If the timer is red, drop the io_uring line, not the number.
 
 Read this aloud once with a stopwatch before you go on. It should land at 65–70 seconds of speech. If you are over 75, cut a category sentence, not the hook.
 
@@ -22,7 +24,11 @@ Read this aloud once with a stopwatch before you go on. It should land at 65–7
 
 > **0:00 — Hook**
 >
-> "Every breach starts with one click — and a slideshow won't fix that. So we built a gym for the reflex to stop and check: **Tripwire**."
+> "**62% of breaches** involve a human being — not a bug in the code. Slideshows don't fix that. So we built a gym for the reflex to stop and check: **Tripwire**."
+>
+> The 62% is **Verizon's 2026 Data Breach Investigations Report** (up from 60% the year before). It is on the slide, so a judge can check it — never quote a stat you can't source in one sentence.
+>
+> Alternative if you'd rather tell a story than cite a number: *"Casinos went dark for days because someone called the IT help desk and asked nicely."* That's the 2023 MGM Resorts breach — a phone call, exactly what we simulate. Verify the wording before you use it.
 
 *Start the video on the scam email itself. No title card. The pause after "Tripwire" is the cut.*
 
