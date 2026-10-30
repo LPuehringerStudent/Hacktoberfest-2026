@@ -47,7 +47,7 @@ How the call ends (simplified): **Hang up & report** → decision `report`. The 
 | 9 | No accounts. Score kept in browser `localStorage` | Team |
 | 10 | Backend only ever generates scenarios for the fictional company. No user-chosen targets or free-text scenarios. Per-IP rate limit | Team |
 | 11 | SQLite holds only: scenario cache + anonymous event log. **Built (16:35):** event log with group commit + `/api/stats`. The scenario cache was cut | Team |
-| 12 | Inbound server built directly on the `io-uring` crate, with an Axum fallback behind a cargo feature | Team |
+| 12 | Inbound server built directly on the `io-uring` crate, with Axum as fallback. **Built (16:55):** `src/uring.rs`, switched with `SERVER=uring` at runtime (no cargo feature needed). Thread per worker + `SO_REUSEPORT`, multishot accept, multishot recv into a registered provided-buffer ring, `httparse`, handlers on Tokio, responses + SSE back via eventfd | Team |
 | 13 | **Build routes on Axum first**, swap in the io_uring server once it passes the same smoke test. The frontend is never blocked by the risky part | Claude's call |
 | 14 | Extras: JSON-schema/grammar-constrained output, MTP speculative decoding, llama-server prompt cache. `SEND_ZC` is a stretch goal | Team |
 | 15 | "Check a real email": upload a screenshot → Gemma 4 image input → red flags. Built last | Team |
@@ -177,6 +177,19 @@ Default until the numbers arrive:
 - **Scenario pool generation:** local llama-server on the R740. It's offline and batched, so speed doesn't matter, and it's the open-source story.
 - **Live calls:** the faster of local and Gemini API (`gemma-4-26b-a4b-it`). Same model either way. Switching is one env var (`MODEL_BASE_URL`).
 - **Abliterated Gemma:** only if plain Gemma refuses to write scenarios with the training framing. Refusal check pending.
+
+## Load test (17:05, R740, oha pinned to 16 other cores, 15 s per run, Tarock training)
+
+| Server | Concurrency | `GET /health` req/s | p99 |
+|---|---|---|---|
+| Axum (Tokio, all 64 threads) | 64 | 113,500 | 1.9 ms |
+| io_uring, 4 workers | 64 | 95,100 | 2.1 ms |
+| io_uring, 16 workers | 64 | **128,200** | 2.1 ms |
+| Axum | 512 | 335,600 | 5.2 ms |
+| io_uring, 4 workers | 512 | 126,000 | 8.3 ms |
+| io_uring, 16 workers | 512 | 296,900 | 5.3 ms |
+
+`POST /api/round` gives the same numbers. The first run found a bug: ~42 ms per response on io_uring (Nagle + delayed ACK between the separate header and body sends). Fixed with `TCP_NODELAY` and coalescing queued pieces into one send, a **60–80× improvement**. Our hand-written io_uring server is in the same league as Axum/Tokio, ahead at 64 connections with 16 workers. The live server runs 16 workers.
 
 ## Risks
 

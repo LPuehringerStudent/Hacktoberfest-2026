@@ -28,11 +28,24 @@ async fn main() {
         Err(e) => tracing::error!(%db_path, error = %e, "event log disabled"),
     }
 
+    let router = app(state, origins);
+    if std::env::var("SERVER").as_deref() == Ok("uring") {
+        let addr = format!("{host}:{port}").parse().expect("HOST:PORT");
+        let workers = std::env::var("URING_WORKERS")
+            .ok()
+            .and_then(|w| w.parse().ok())
+            .unwrap_or(4);
+        backend::uring::serve(router, addr, workers, tokio::runtime::Handle::current())
+            .expect("io_uring server");
+        shutdown().await;
+        return;
+    }
+
     let listener = tokio::net::TcpListener::bind(format!("{host}:{port}"))
         .await
         .expect("bind");
     tracing::info!("listening on http://{}", listener.local_addr().unwrap());
-    axum::serve(listener, app(state, origins))
+    axum::serve(listener, router)
         .with_graceful_shutdown(shutdown())
         .await
         .unwrap();

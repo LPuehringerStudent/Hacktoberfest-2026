@@ -14,6 +14,8 @@ cargo fmt && cargo clippy --all-targets -- -D warnings   # CI runs both
 | `src/routes.rs` | Handlers |
 | `src/scenario.rs` | Scenario schema (the contract) + stripping of answer fields |
 | `fixtures/scenarios.json` | Mock scenarios served until the Gemma pool exists |
+| `src/uring.rs` | Our io_uring HTTP/1.1 server (`SERVER=uring`): multishot accept/recv, provided buffer ring, same router |
+| `src/db.rs` | SQLite event log with group commit |
 | `tests/smoke.rs` | Route smoke tests. Any server implementation (Axum, io_uring) must pass them |
 
 `main` is autodeployed to https://hacktober-api.lpuehringer.dev (see `docs/ARCHITECTURE.md`). The deploy runs `cargo build --release` and starts `target/release/backend`.
