@@ -1,6 +1,6 @@
-# Plan: phishing & social-engineering trainer
+# Tripwire: phishing & social-engineering trainer
 
-Working name: **Phishing Dojo** <!-- TODO: final name -->
+Project name: **Tripwire**
 
 ## Pitch
 

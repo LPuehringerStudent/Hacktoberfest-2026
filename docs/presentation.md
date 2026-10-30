@@ -95,7 +95,7 @@ Likely questions, and the answer that is true:
 ## Before you record (do these first)
 
 1. **`/api/round/summary` and `/api/stats` are not wired into the frontend.** The round-end Gemma coaching is backend-only: `frontend/src/routes/index.tsx` keeps the score client-side and `frontend/src/lib/api.ts` has no `summary` call. Either wire it or leave it out of the video — do not promise a screen that is not there. Re-sync with `scripts/sync-frontend.sh` and check what Lovable has added since commit #36.
-2. **One name.** The UI says **Tripwire**_; the README and `docs/PLAN.md` still say *Phishing Dojo*. Use Tripwire everywhere.
+2. **One name.** Use **Tripwire** consistently in the UI, documentation, slides and recording.
 3. **Verify `end_call` actually fires** on a real call before claiming function calling. `README.md` still carries a TODO saying "if it works in the demo." If it is flaky, cut those four words.
 4. **Don't script the "you noticed it but clicked anyway" debrief.** `decide()` does not send `observed`, so that state never renders.
 

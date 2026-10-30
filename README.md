@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./assets/readme/hero.svg" width="100%" alt="Phishing Dojo: spot the scam in your inbox and on the phone. Shown: a real Gemma 4 scam email asking to change a supplier's bank details, with its four red flags highlighted.">
+  <img src="./assets/readme/hero.svg" width="100%" alt="Tripwire: spot the scam in your inbox and on the phone. Shown: a real Gemma 4 scam email asking to change a supplier's bank details, with its four red flags highlighted.">
 </p>
 
 <p align="center">
@@ -9,7 +9,7 @@
   <a href="#run-it-locally">Run it locally</a>
 </p>
 
-Most breaches start with a person, not a bug. **Phishing Dojo** is a safe simulator where staff of a fictional company work through their inbox and answer their phone. Each email or call is either a normal work request or a scam. You decide whether to **do it** or **report it**, and the debrief shows exactly which red flags you caught or missed.
+Most breaches start with a person, not a bug. **Tripwire** is a safe simulator where staff of a fictional company work through their inbox and answer their phone. Each email or call is either a normal work request or a scam. You decide whether to **do it** or **report it**, and the debrief shows exactly which red flags you caught or missed.
 
 Built in one day at the **MLH x YAIL Hacktoberfest HackDay** (JKU Linz, 30 Oct 2026).
 
