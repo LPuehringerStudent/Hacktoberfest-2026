@@ -26,7 +26,7 @@ Most breaches start with a person, not a bug. Non-technical staff practise spott
 | **Laurenz** | Round = 5 random scenarios, mixed scam/legit. `POST /v1/chat/completions` relay: loads the persona for `scenario_id` server-side, streams from Gemma 4 | #9 #12 |
 | **Everyone at 17:30** | README, video, submission | #20 |
 
-How the call ends (simplified): **Hang up & report** → decision `report`. The agent ends the call (`end_call`) after getting what it wanted or finishing the legit request → decision `comply`. The debrief uses the scenario's `redFlags`. No per-turn tool tracking.
+How the call ends (simplified): **Hang up & report** → decision `report`. The agent ends the call (`end_call`) after getting what it wanted or finishing the legit request → the user still picks Report or Comply (no automatic decision, see #36). The debrief uses the scenario's `redFlags`. No per-turn tool tracking.
 
 **Cut:** io_uring server, SQLite + group commit, live scenario pool, local llama-server / MTP, rate limit, Gemma-written debriefs, stats page, check-a-real-email, German, `SEND_ZC`. The **Open-Source AI** entry still qualifies: Gemma 4 is open-weight and essential (scenarios + caller), the repo is public and MIT-licensed. Mention in the README that the benchmark shows it runs on our own CPU server.
 
