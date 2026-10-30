@@ -17,6 +17,12 @@ Run (once scaffolded):
 
 ```bash
 cd backend && uv sync && uv run uvicorn app.main:app --reload --port 8000
-# expose it at https://hacktober-api.lpuehringer.dev (named tunnel, see docs/ARCHITECTURE.md):
-cloudflared tunnel run --url http://localhost:8000 hacktober
+# optional: temporary public URL to test unmerged work with Lovable
+cloudflared tunnel --url http://localhost:8000
 ```
+
+`main` is autodeployed to https://hacktober-api.lpuehringer.dev (see `docs/ARCHITECTURE.md`). For that to work, keep:
+
+- `backend/pyproject.toml` (uv project)
+- `app.main:app` as the ASGI entrypoint
+- a `GET /health` route
