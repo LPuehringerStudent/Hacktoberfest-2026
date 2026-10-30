@@ -24,7 +24,7 @@ Owners decide quickly in their area. Cross-cutting decisions get settled in 2 mi
 ## Repo layout
 
 ```
-backend/        Python API: Gemma 4 + ElevenLabs. Devs work here.
+backend/        Rust API: scenarios, Gemma 4, ElevenLabs relay. Devs work here.
 frontend/       READ-ONLY mirror of the Lovable repo (git subtree). Don't edit here.
 docs/           API contract, architecture, challenge checklist, submission plan
 scripts/        Helper scripts (frontend sync, ...)
@@ -44,7 +44,7 @@ Lovable can only sync to a repo it creates itself, with the app at the repo root
 
 Lovable can't see this repo. Its AI only knows what we tell it:
 
-1. **Project knowledge:** paste `docs/API.md` into the Lovable project's knowledge, and re-paste it whenever it changes (devs: ping the Lovable person). FastAPI also serves the live schema at `<backend-url>/openapi.json`, which can be pasted too.
+1. **Project knowledge:** paste `docs/API.md` into the Lovable project's knowledge, and re-paste it whenever it changes (devs: ping the Lovable person). `backend/fixtures/scenarios.json` shows real example data in the exact shape.
 2. **Backend URL:** in one place in the frontend: `src/config.ts` → `export const API_URL = "https://hacktober-api.lpuehringer.dev"`. Tell Lovable to use it for every call.
 3. **Reachable backend:** Lovable's preview runs in the cloud, so it **can't reach `localhost`**. Every merge to `main` is autodeployed to `hacktober-api.lpuehringer.dev` within about a minute (see [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md#autodeploy)). Get a `/health` endpoint merged within the first hour so the pipeline is proven early.
 4. **CORS:** the backend must allow `https://hacktober.lpuehringer.dev` and the Lovable preview origins (`*.lovable.app`, `*.lovableproject.com`). Check the actual origin in the browser devtools if requests fail.

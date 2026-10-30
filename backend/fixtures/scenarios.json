@@ -1,0 +1,95 @@
+[
+  {
+    "id": "fx_email_m365",
+    "channel": "email",
+    "isScam": true,
+    "redFlags": [
+      { "type": "sender_mismatch", "evidence": "Sent from it-desk@donauwerk-support.example, not @donauwerk.example" },
+      { "type": "urgency", "evidence": "\"within 2 hours or your mailbox will be deleted\"" },
+      { "type": "link_mismatch", "evidence": "Link shows login.donauwerk.example but goes to m365-donauwerk.example" },
+      { "type": "risky_attachment", "evidence": "Mailbox_Policy.docm asks you to enable macros" }
+    ],
+    "safeSignals": [],
+    "correctAction": "report",
+    "email": {
+      "fromName": "Donauwerk IT Service Desk",
+      "fromAddress": "it-desk@donauwerk-support.example",
+      "subject": "Action required: mailbox storage limit exceeded",
+      "bodyMarkdown": "Dear colleague,\n\nyour mailbox has exceeded its storage limit. To avoid losing emails, please [verify your account](link:l1) **within 2 hours or your mailbox will be deleted**.\n\nThe new mailbox policy is attached for your reference.\n\nKind regards,\nIT Service Desk",
+      "links": [
+        {
+          "id": "l1",
+          "shownHref": "https://login.donauwerk.example",
+          "realHref": "https://m365-donauwerk.example/login",
+          "landing": { "template": "m365_login", "brand": "Microsoft 365", "trap": true }
+        }
+      ],
+      "attachments": [
+        {
+          "id": "a1",
+          "filename": "Mailbox_Policy.docm",
+          "kind": "docx_macro",
+          "preview": { "title": "Mailbox Policy 2026", "text": "This document is protected. Click \"Enable content\" to view." },
+          "trap": true
+        }
+      ]
+    }
+  },
+  {
+    "id": "fx_email_invoice",
+    "channel": "email",
+    "isScam": false,
+    "redFlags": [],
+    "safeSignals": [
+      "Sender is the known colleague's real @donauwerk.example address",
+      "Link goes to the internal invoice portal it claims to",
+      "Follows the normal four-eyes approval process, no pressure"
+    ],
+    "correctAction": "comply",
+    "email": {
+      "fromName": "Sabine Gruber (Accounting)",
+      "fromAddress": "sabine.gruber@donauwerk.example",
+      "subject": "Please approve invoice 2026-4471 (Linz AG, office electricity)",
+      "bodyMarkdown": "Hi,\n\nthe October electricity invoice from Linz AG is ready for your second approval in the [invoice portal](link:l1). It matches the usual monthly amount. No rush, end of week is fine.\n\nThanks,\nSabine",
+      "links": [
+        {
+          "id": "l1",
+          "shownHref": "https://invoices.donauwerk.example/2026-4471",
+          "realHref": "https://invoices.donauwerk.example/2026-4471",
+          "landing": { "template": "invoice_portal", "brand": "Donauwerk Invoices", "trap": false }
+        }
+      ],
+      "attachments": [
+        {
+          "id": "a1",
+          "filename": "Invoice_2026-4471.pdf",
+          "kind": "pdf",
+          "preview": { "title": "Linz AG · Invoice 2026-4471", "text": "Electricity, October 2026 · Donauwerk Logistik GmbH · EUR 3,412.80" },
+          "trap": false
+        }
+      ]
+    }
+  },
+  {
+    "id": "fx_call_mfa",
+    "channel": "call",
+    "isScam": true,
+    "redFlags": [
+      { "type": "authority", "evidence": "Claims to be from IT security" },
+      { "type": "credential_request", "evidence": "Asks you to read out the 6-digit code from your authenticator app" },
+      { "type": "urgency", "evidence": "\"Your account is being attacked right now\"" },
+      { "type": "process_bypass", "evidence": "Says there's no time to open a ticket" }
+    ],
+    "safeSignals": [],
+    "correctAction": "report",
+    "call": {
+      "callerName": "Markus, IT Security",
+      "callerId": "+43 732 000 1234",
+      "goal": "Get the user to read out their MFA code",
+      "target": "mfa_code",
+      "openingLine": "Hi, Markus from IT security here. We're seeing suspicious logins on your account right now. I need to verify you quickly.",
+      "voiceId": "TODO",
+      "personaPrompt": "You are a social engineer posing as 'Markus from Donauwerk IT security'. Stay calm, friendly and urgent. Your goal is to get the user to read out the 6-digit code from their authenticator app. Never admit it's a scam. Keep replies to 1-2 short sentences."
+    }
+  }
+]

@@ -1,28 +1,25 @@
 # backend/
 
-Python 3.12 + FastAPI. Gemma 4 (Gemini API) and ElevenLabs are called from here. Scaffold this at kickoff (MLH: no project code before the event).
-
-Suggested layout:
-
-```
-backend/
-  pyproject.toml     # uv init; deps: fastapi, uvicorn, google-genai, elevenlabs, python-dotenv
-  app/
-    main.py          # FastAPI app, /health, CORS: allow_origin_regex for *.lovable.app / *.lovableproject.com + CORS_ORIGINS
-    ai.py            # Gemma 4 calls
-    voice.py         # ElevenLabs calls
-```
-
-Run (once scaffolded):
+Rust (edition 2024) + Axum 0.8 + Tokio. See [`docs/PLAN.md`](../docs/PLAN.md) for the design and [`docs/API.md`](../docs/API.md) for the contract.
 
 ```bash
-cd backend && uv sync && uv run uvicorn app.main:app --reload --port 8000
-# optional: temporary public URL to test unmerged work with Lovable
-cloudflared tunnel --url http://localhost:8000
+cargo run                      # http://127.0.0.1:8000  (env: HOST, PORT, CORS_ORIGINS, RUST_LOG)
+cargo test                     # route smoke tests: must stay green
+cargo fmt && cargo clippy --all-targets -- -D warnings   # CI runs both
 ```
 
-`main` is autodeployed to https://hacktober-api.lpuehringer.dev (see `docs/ARCHITECTURE.md`). For that to work, keep:
+| Path | What |
+|---|---|
+| `src/lib.rs` | `app()`: router, CORS, state |
+| `src/routes.rs` | Handlers |
+| `src/scenario.rs` | Scenario schema (the contract) + stripping of answer fields |
+| `fixtures/scenarios.json` | Mock scenarios served until the Gemma pool exists |
+| `tests/smoke.rs` | Route smoke tests. Any server implementation (Axum, io_uring) must pass them |
 
-- `backend/pyproject.toml` (uv project)
-- `app.main:app` as the ASGI entrypoint
-- a `GET /health` route
+`main` is autodeployed to https://hacktober-api.lpuehringer.dev (see `docs/ARCHITECTURE.md`). The deploy runs `cargo build --release` and starts `target/release/backend`.
+
+Test unmerged work with the Lovable preview through a temporary public URL:
+
+```bash
+cloudflared tunnel --url http://localhost:8000
+```
