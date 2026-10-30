@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-labelledby="title desc">
-  <title id="title">How Phishing Dojo works</title>
+  <title id="title">How Tripwire works</title>
   <desc id="desc">Four steps: Gemma 4 writes labelled scenarios; the trainee works through emails in the Lovable inbox and live ElevenLabs calls; they choose do it or report; the debrief shows every red flag with its evidence.</desc>
 
   <rect width="1200" height="300" rx="24" fill="#F5F3EE"/>
