@@ -22,9 +22,9 @@ Status: **live** = real, **mock** = real shape with fixture data (`backend/fixtu
 { "ok": true }
 ```
 
-### `POST /api/round` (mock)
+### `POST /api/round` (live)
 
-Starts a round. Request body: none.
+Starts a round: 5 random scenarios (fewer if the pool is smaller), at least one call, 2–3 scams. Request body: none.
 
 ```json
 { "roundId": "rd_0", "scenarios": [{ "id": "fx_email_m365", "channel": "email" }, { "id": "fx_call_mfa", "channel": "call" }] }
@@ -95,11 +95,45 @@ Call:
 
 Red flag `type`: `urgency` | `authority` | `credential_request` | `payment_change` | `sender_mismatch` | `link_mismatch` | `risky_attachment` | `secrecy` | `process_bypass`.
 
+### `POST /v1/chat/completions` (live): ElevenLabs custom LLM
+
+**Not called by the frontend.** ElevenLabs calls it during a live call. OpenAI chat-completions format in, SSE stream out (passed through from Gemma 4 unchanged, including tool calls like `end_call`).
+
+What the relay does:
+1. Checks `Authorization: Bearer <RELAY_TOKEN>` (if `RELAY_TOKEN` is set on the server).
+2. Finds the scenario id: `elevenlabs_extra_body.scenario_id`, or else `scenario_id: <id>` anywhere in the agent's system prompt.
+3. **Replaces** the agent's system prompt with the scenario's persona + call rules (short spoken turns, stay in character, call `end_call` once the goal is reached, the request is done, or the user refuses twice). The persona never reaches the browser.
+4. Forwards to Gemma 4 (`MODEL_BASE_URL`, `GEMMA_MODEL`, `GEMINI_API_KEY`) and streams the reply back.
+
+Errors: `401` bad token, `400` no scenario id / not a call scenario, `404` unknown scenario, `502` model error.
+
+**ElevenLabs agent setup (Dev 3):**
+
+| Setting | Value |
+|---|---|
+| LLM | Custom LLM |
+| Server URL | `https://hacktober-api.lpuehringer.dev/v1` (`/chat/completions` without `/v1` also works) |
+| Model ID | anything (the server sets the model) |
+| API key secret | the server's `RELAY_TOKEN` |
+| System prompt | `scenario_id: {{scenario_id}}` (replaced server-side anyway) |
+| First message | `{{opening_line}}` |
+| Tools | system tool **End call** enabled |
+
+**Frontend (Lovable), starting a call:**
+
+```ts
+conversation.startSession({
+  agentId: "<from Dev 3>",
+  dynamicVariables: { scenario_id: scenario.id, opening_line: scenario.call.openingLine },
+});
+```
+
+When the call ends: **Hang up & report** → `POST /api/scenario/{id}/decision` `{ "action": "report" }`. Ended by the agent → `{ "action": "comply" }`. Show the returned debrief.
+
 ### Planned
 
 | Endpoint | Purpose |
 |---|---|
 | `GET /api/call/{id}/debrief` | Debrief after a call (outcome from Gemma's tool calls + transcript), same shape as the decision response |
-| `POST /v1/chat/completions` | ElevenLabs custom-LLM endpoint (OpenAI-compatible, SSE). Not called by the frontend |
 | `POST /api/check-email` | Multipart screenshot → `{ verdict, redFlags: [{ type, evidence }] }` |
 | `GET /api/stats` | Aggregates from the event log |
