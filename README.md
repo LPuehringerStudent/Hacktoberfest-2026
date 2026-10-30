@@ -18,7 +18,7 @@ Built in one day at the **MLH x YAIL Hacktoberfest HackDay** (JKU Linz, 30 Oct 2
 
 ## Demo
 
-<!-- TODO: video link + 2–3 screenshots (inbox with link hover, call screen, debrief) -->
+▶️ **[Watch the demo video](docs/presentation/demo.mp4)** (46 s).
 
 The email above is real output: [`gen_email_03`](backend/fixtures/scenarios.json), written by Gemma 4 (text shortened to fit; the four red flags are the ones Gemma labelled).
 
@@ -58,7 +58,7 @@ For a self-hosted Gemma 4, run `llama-server` with the GGUF weights and set `MOD
 | 🏆 **Best Open-Source AI Project** (DigitalOcean), **won** | Open-weight Gemma 4 writes every scenario and plays every caller; without it there is no app. MIT-licensed, public repo. Gemma 4 26B A4B also runs on our own CPU server with llama.cpp (Q4_0, ~11.6 tokens/s, [benchmark](docs/PLAN.md#model-hosting)); switching is one env var. |
 | 🏆 **Best Use of Gemma 4**, **won** | `gemma-4-26b-a4b-it` with system instructions (company fact sheet, training framing), structured JSON validated against a typed schema with a self-correction loop, and real-time role-play as phone personas. <!-- TODO: function calling (end_call), if it works in the demo --> |
 | **Best Use of ElevenLabs** | Half of the training is live calls: a voice agent you can actually argue with, driven by Gemma through our backend. |
-| **Best Use of Lovable** | The whole frontend (inbox, link hover, landing pages, attachment previews, call screen, debrief) is built in Lovable: <!-- TODO: Lovable repo URL -->. Mirrored into [`frontend/`](frontend/). |
+| **Best Use of Lovable** | The whole frontend (inbox, link hover, landing pages, attachment previews, call screen, debrief) is built in Lovable and mirrored into [`frontend/`](frontend/). |
 
 ## Safety
 
