@@ -178,6 +178,19 @@ Default until the numbers arrive:
 - **Live calls:** the faster of local and Gemini API (`gemma-4-26b-a4b-it`). Same model either way. Switching is one env var (`MODEL_BASE_URL`).
 - **Abliterated Gemma:** only if plain Gemma refuses to write scenarios with the training framing. Refusal check pending.
 
+## Load test (17:05, R740, oha pinned to 16 other cores, 15 s per run, Tarock training)
+
+| Server | Concurrency | `GET /health` req/s | p99 |
+|---|---|---|---|
+| Axum (Tokio, all 64 threads) | 64 | 113,500 | 1.9 ms |
+| io_uring, 4 workers | 64 | 95,100 | 2.1 ms |
+| io_uring, 16 workers | 64 | **128,200** | 2.1 ms |
+| Axum | 512 | 335,600 | 5.2 ms |
+| io_uring, 4 workers | 512 | 126,000 | 8.3 ms |
+| io_uring, 16 workers | 512 | 296,900 | 5.3 ms |
+
+`POST /api/round` gives the same numbers. The first run found a bug: ~42 ms per response on io_uring (Nagle + delayed ACK between the separate header and body sends). Fixed with `TCP_NODELAY` and coalescing queued pieces into one send, a **60–80× improvement**. Our hand-written io_uring server is in the same league as Axum/Tokio, ahead at 64 connections with 16 workers. The live server runs 16 workers.
+
 ## Risks
 
 | Risk | Mitigation |
