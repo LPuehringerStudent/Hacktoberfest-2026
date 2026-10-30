@@ -4,10 +4,22 @@
     "channel": "email",
     "isScam": true,
     "redFlags": [
-      { "type": "sender_mismatch", "evidence": "Sent from it-desk@donauwerk-support.example, not @donauwerk.example" },
-      { "type": "urgency", "evidence": "\"within 2 hours or your mailbox will be deleted\"" },
-      { "type": "link_mismatch", "evidence": "Link shows login.donauwerk.example but goes to m365-donauwerk.example" },
-      { "type": "risky_attachment", "evidence": "Mailbox_Policy.docm asks you to enable macros" }
+      {
+        "type": "sender_mismatch",
+        "evidence": "Sent from it-desk@donauwerk-support.example, not @donauwerk.example"
+      },
+      {
+        "type": "urgency",
+        "evidence": "\"within 2 hours or your mailbox will be deleted\""
+      },
+      {
+        "type": "link_mismatch",
+        "evidence": "Link shows login.donauwerk.example but goes to m365-donauwerk.example"
+      },
+      {
+        "type": "risky_attachment",
+        "evidence": "Mailbox_Policy.docm asks you to enable macros"
+      }
     ],
     "safeSignals": [],
     "correctAction": "report",
@@ -21,7 +33,11 @@
           "id": "l1",
           "shownHref": "https://login.donauwerk.example",
           "realHref": "https://m365-donauwerk.example/login",
-          "landing": { "template": "m365_login", "brand": "Microsoft 365", "trap": true }
+          "landing": {
+            "template": "m365_login",
+            "brand": "Microsoft 365",
+            "trap": true
+          }
         }
       ],
       "attachments": [
@@ -29,7 +45,10 @@
           "id": "a1",
           "filename": "Mailbox_Policy.docm",
           "kind": "docx_macro",
-          "preview": { "title": "Mailbox Policy 2026", "text": "This document is protected. Click \"Enable content\" to view." },
+          "preview": {
+            "title": "Mailbox Policy 2026",
+            "text": "This document is protected. Click \"Enable content\" to view."
+          },
           "trap": true
         }
       ]
@@ -56,7 +75,11 @@
           "id": "l1",
           "shownHref": "https://invoices.donauwerk.example/2026-4471",
           "realHref": "https://invoices.donauwerk.example/2026-4471",
-          "landing": { "template": "invoice_portal", "brand": "Donauwerk Invoices", "trap": false }
+          "landing": {
+            "template": "intranet_page",
+            "brand": "Donauwerk Invoices",
+            "trap": false
+          }
         }
       ],
       "attachments": [
@@ -64,7 +87,10 @@
           "id": "a1",
           "filename": "Invoice_2026-4471.pdf",
           "kind": "pdf",
-          "preview": { "title": "Linz AG · Invoice 2026-4471", "text": "Electricity, October 2026 · Donauwerk Logistik GmbH · EUR 3,412.80" },
+          "preview": {
+            "title": "Linz AG · Invoice 2026-4471",
+            "text": "Electricity, October 2026 · Donauwerk Logistik GmbH · EUR 3,412.80"
+          },
           "trap": false
         }
       ]
@@ -75,10 +101,22 @@
     "channel": "call",
     "isScam": true,
     "redFlags": [
-      { "type": "authority", "evidence": "Claims to be from IT security" },
-      { "type": "credential_request", "evidence": "Asks you to read out the 6-digit code from your authenticator app" },
-      { "type": "urgency", "evidence": "\"Your account is being attacked right now\"" },
-      { "type": "process_bypass", "evidence": "Says there's no time to open a ticket" }
+      {
+        "type": "authority",
+        "evidence": "Claims to be from IT security"
+      },
+      {
+        "type": "credential_request",
+        "evidence": "Asks you to read out the 6-digit code from your authenticator app"
+      },
+      {
+        "type": "urgency",
+        "evidence": "\"Your account is being attacked right now\""
+      },
+      {
+        "type": "process_bypass",
+        "evidence": "Says there's no time to open a ticket"
+      }
     ],
     "safeSignals": [],
     "correctAction": "report",
@@ -90,6 +128,691 @@
       "openingLine": "Hi, Markus from IT security here. We're seeing suspicious logins on your account right now. I need to verify you quickly.",
       "voiceId": "TODO",
       "personaPrompt": "You are a social engineer posing as 'Markus from Donauwerk IT security'. Stay calm, friendly and urgent. Your goal is to get the user to read out the 6-digit code from their authenticator app. Never admit it's a scam. Keep replies to 1-2 short sentences."
+    }
+  },
+  {
+    "id": "gen_email_01",
+    "channel": "email",
+    "isScam": true,
+    "redFlags": [
+      {
+        "type": "urgency",
+        "evidence": "Your password will expire in 4 hours. Please update immediately to avoid account lockout."
+      },
+      {
+        "type": "sender_mismatch",
+        "evidence": "The sender address is microsoft-security@donauwerk-support.example instead of the official company domain."
+      },
+      {
+        "type": "link_mismatch",
+        "evidence": "The link text says 'Update Password', but the actual destination is login.donauwerk-security.example."
+      }
+    ],
+    "safeSignals": [],
+    "correctAction": "report",
+    "email": {
+      "fromName": "Donauwerk IT Support",
+      "fromAddress": "microsoft-security@donauwerk-support.example",
+      "subject": "URGENT: Your Microsoft 365 Password Expires Today",
+      "bodyMarkdown": "Dear User,\n\nOur systems indicate that your Donauwerk Logistik GmbH password is scheduled to expire in **4 hours**. To prevent a complete lockout from your email and Microsoft 365 services, you must synchronize your credentials immediately.\n\nPlease use our secure portal to [Update Password](link:l1) and confirm your identity. Failure to comply will result in a mandatory IT ticket and a 24-hour account suspension.\n\nRegards,\n\nIT Service Desk\nDonauwerk Logistik GmbH",
+      "links": [
+        {
+          "id": "l1",
+          "shownHref": "https://login.donauwerk-security.example/auth",
+          "realHref": "https://login.donauwerk-security.example/auth",
+          "landing": {
+            "template": "m365_login",
+            "brand": "Microsoft 365",
+            "trap": true
+          }
+        }
+      ],
+      "attachments": []
+    }
+  },
+  {
+    "id": "gen_email_02",
+    "channel": "email",
+    "isScam": true,
+    "redFlags": [
+      {
+        "type": "sender_mismatch",
+        "evidence": "katharina.weber.donauwerk@gmail.example"
+      },
+      {
+        "type": "urgency",
+        "evidence": "This must be completed within the next hour to avoid legal complications."
+      },
+      {
+        "type": "secrecy",
+        "evidence": "Keep this strictly between us for now as it is a confidential acquisition."
+      },
+      {
+        "type": "process_bypass",
+        "evidence": "Please process this immediately via direct bank transfer rather than using the standard invoice portal."
+      }
+    ],
+    "safeSignals": [],
+    "correctAction": "report",
+    "email": {
+      "fromName": "Katharina Weber",
+      "fromAddress": "katharina.weber.donauwerk@gmail.example",
+      "subject": "URGENT: Confidential Project - Immediate Action Required",
+      "bodyMarkdown": "Dear Team,\n\nI am currently in a high-level meeting regarding a confidential acquisition. To ensure the deal remains private, we need to make an immediate down payment to our new partner. \n\n[Please find the transfer instructions here](link:l1). This must be completed within the next hour to avoid legal complications. \n\nKeep this strictly between us for now as it is a confidential acquisition and I do not want the rest of the staff alerted prematurely. Please confirm once the transfer is initiated.\n\nBest regards,\n\nKatharina Weber\nCEO, Donauwerk Logistik GmbH",
+      "links": [
+        {
+          "id": "l1",
+          "shownHref": "https://donauwerk-finance.example/transfer-details",
+          "realHref": "http://login.donauwerk-support.example/login",
+          "landing": {
+            "template": "m365_login",
+            "brand": "Microsoft 365",
+            "trap": true
+          }
+        }
+      ],
+      "attachments": []
+    }
+  },
+  {
+    "id": "gen_email_03",
+    "channel": "email",
+    "isScam": true,
+    "redFlags": [
+      {
+        "type": "payment_change",
+        "evidence": "Please update our IBAN in your system immediately to avoid payment delays."
+      },
+      {
+        "type": "urgency",
+        "evidence": "This must be processed before the Friday payment run."
+      },
+      {
+        "type": "sender_mismatch",
+        "evidence": "The sender address is billing@spedition-moser-office.example instead of the known spedition-moser.example."
+      },
+      {
+        "type": "process_bypass",
+        "evidence": "Asks to update details via email/attachment instead of using the four-eyes approval process in the invoice portal."
+      }
+    ],
+    "safeSignals": [],
+    "correctAction": "report",
+    "email": {
+      "fromName": "Spedition Moser Billing",
+      "fromAddress": "billing@spedition-moser-office.example",
+      "subject": "URGENT: Change of Bank Details - Spedition Moser",
+      "bodyMarkdown": "Dear Donauwerk Accounting Team,\n\nPlease be advised that Spedition Moser has transitioned to a new banking partner. \n\nWe have attached our updated bank account information to this email. [Please download the updated invoice details here](link:l1) to ensure your records are current. This change is effective immediately and **must be updated in your system before the Friday payment run** to prevent any service interruptions.\n\nThank you for your prompt cooperation.\n\nBest regards,\n\nAccounts Receivable\nSpedition Moser",
+      "links": [
+        {
+          "id": "l1",
+          "shownHref": "https://spedition-moser.example/banking-update",
+          "realHref": "http://invoices.donauwerk-portal.example/login",
+          "landing": {
+            "template": "m365_login",
+            "brand": "Microsoft 365",
+            "trap": true
+          }
+        }
+      ],
+      "attachments": [
+        {
+          "id": "a1",
+          "filename": "Moser_Bank_Details.pdf",
+          "kind": "pdf",
+          "preview": {
+            "title": "Bank Account Notification",
+            "text": "Spedition Moser GmbH. New IBAN: AT89 1234 5678 9012 3456. Please update your payment templates immediately."
+          },
+          "trap": false
+        }
+      ]
+    }
+  },
+  {
+    "id": "gen_email_04",
+    "channel": "email",
+    "isScam": true,
+    "redFlags": [
+      {
+        "type": "risky_attachment",
+        "evidence": "Salary_Adjustment_2024_Confidential.docx requires enabling content to view"
+      },
+      {
+        "type": "authority",
+        "evidence": "sent by Elena Novak, HR"
+      },
+      {
+        "type": "process_bypass",
+        "evidence": "HR sends policy updates and sensitive info via the intranet, not as macro-enabled attachments"
+      }
+    ],
+    "safeSignals": [],
+    "correctAction": "report",
+    "email": {
+      "fromName": "Elena Novak",
+      "fromAddress": "elena.novak@donauwerk-hr.example",
+      "subject": "URGENT: Your 2026 Salary Adjustment Details",
+      "bodyMarkdown": "Dear Colleague,\n\nFollowing the recent annual review, please find your individual [salary adjustment document](link:l1) attached. Due to strict data privacy regulations regarding compensation, we cannot host this directly on the intranet.\n\n[Download Salary Adjustment.docx](link:l1)\n\n**Please note:** You must [enable content](link:l1) upon opening the document to decrypt the personal data and view your new figures. This must be completed by end of day to ensure your next payroll cycle is updated correctly.\n\nBest regards,\n\nElena Novak\nHR Department\nDonauwerk Logistik GmbH",
+      "links": [
+        {
+          "id": "l1",
+          "shownHref": "https://intranet.donauwerk.example/hr/documents/salary-adj",
+          "realHref": "http://donauwerk-hr.example/secure/download",
+          "landing": {
+            "template": "intranet_page",
+            "brand": "Donauwerk Logistik",
+            "trap": false
+          }
+        }
+      ],
+      "attachments": [
+        {
+          "id": "a1",
+          "filename": "Salary_Adjustment_2024_Confidential.docx",
+          "kind": "docx_macro",
+          "preview": {
+            "title": "Salary Adjustment Document",
+            "text": "This document is encrypted. Please click 'Enable Content' in the yellow bar at the top to decrypt and view your payroll information."
+          },
+          "trap": true
+        }
+      ]
+    }
+  },
+  {
+    "id": "gen_email_05",
+    "channel": "email",
+    "isScam": true,
+    "redFlags": [
+      {
+        "type": "sender_mismatch",
+        "evidence": "elena.novak@donauwerk-hr.example"
+      },
+      {
+        "type": "urgency",
+        "evidence": "Please review and acknowledge these changes by the end of the day to avoid any disruption to your holiday scheduling."
+      },
+      {
+        "type": "link_mismatch",
+        "evidence": "The link for 'intranet.donauwerk.example' actually points to 'intranet.donauwerk-portal.example'"
+      }
+    ],
+    "safeSignals": [],
+    "correctAction": "report",
+    "email": {
+      "fromName": "Elena Novak (HR)",
+      "fromAddress": "elena.novak@donauwerk-hr.example",
+      "subject": "URGENT: Updated Employee Parking and Holiday Policy",
+      "bodyMarkdown": "Dear Team,\n\nDue to recent facility changes at the Linz-Hafen site, we have updated our internal policies regarding staff parking and the upcoming holiday leave request process. \n\nAll employees are required to review these updates immediately. Please log in to the [Company Intranet](link:l1) to acknowledge the new terms. \n\nPlease review and acknowledge these changes by the end of the day to avoid any disruption to your holiday scheduling.\n\nBest regards,\n\nElena Novak\nHR Department\nDonauwerk Logistik GmbH",
+      "links": [
+        {
+          "id": "l1",
+          "shownHref": "https://intranet.donauwerk.example/policy-update",
+          "realHref": "https://intranet.donauwerk-portal.example/login",
+          "landing": {
+            "template": "intranet_page",
+            "brand": "Donauwerk Logistik",
+            "trap": true
+          }
+        }
+      ],
+      "attachments": []
+    }
+  },
+  {
+    "id": "gen_email_06",
+    "channel": "email",
+    "isScam": true,
+    "redFlags": [
+      {
+        "type": "sender_mismatch",
+        "evidence": "The sender address is hr-noreply@donauwerk-hr.example instead of the internal domain @donauwerk.example"
+      },
+      {
+        "type": "urgency",
+        "evidence": "Please review and sign by the end of the day to ensure timely processing."
+      },
+      {
+        "type": "link_mismatch",
+        "evidence": "The link text says 'View Bonus List' but the destination is login.donauwerk-portal.example"
+      },
+      {
+        "type": "authority",
+        "evidence": "The email claims to be an automated notification from the HR department regarding sensitive compensation data."
+      }
+    ],
+    "safeSignals": [],
+    "correctAction": "report",
+    "email": {
+      "fromName": "Donauwerk HR Dept",
+      "fromAddress": "hr-noreply@donauwerk-hr.example",
+      "subject": "Urgent: Q4 Bonus Distribution List - Action Required",
+      "bodyMarkdown": "Dear Employee,\n\nAs part of the end-of-year financial review, the **Q4 Bonus Distribution List** has been uploaded to the secure portal. \n\nTo ensure your details are correct and to avoid any delays in processing, please [View Bonus List](link:l1) and confirm your information. \n\nPlease review and sign by the end of the day to ensure timely processing.\n\nRegards,\n\nHR Department\nDonauwerk Logistik GmbH",
+      "links": [
+        {
+          "id": "l1",
+          "shownHref": "https://hr-portal.donauwerk-hr.example/view/q4-bonus",
+          "realHref": "https://login.donauwerk-portal.example/auth",
+          "landing": {
+            "template": "m365_login",
+            "brand": "Microsoft 365",
+            "trap": true
+          }
+        }
+      ],
+      "attachments": []
+    }
+  },
+  {
+    "id": "gen_email_07",
+    "channel": "email",
+    "isScam": false,
+    "redFlags": [],
+    "safeSignals": [
+      "Sender uses the correct internal company domain",
+      "Request follows the mandatory four-eyes approval process for payments over 1,000 EUR",
+      "The link directs to the legitimate internal invoice portal",
+      "The attachment is a standard PDF without macro requests"
+    ],
+    "correctAction": "comply",
+    "email": {
+      "fromName": "Sabine Gruber",
+      "fromAddress": "sabine.gruber@donauwerk.example",
+      "subject": "Approval Required: New Invoice from Spedition Moser",
+      "bodyMarkdown": "Hello,\n\nA new invoice from **Spedition Moser** has been uploaded to the portal for your review. As the amount exceeds 1,000 EUR, it requires your secondary approval per our standard accounting process.\n\nPlease log in to the [invoice portal](link:l1) to review the details and finalize the payment authorization.\n\nI have also attached a copy of the invoice for your quick reference.\n\nBest regards,\n\nSabine Gruber\nAccounting | Donauwerk Logistik GmbH",
+      "links": [
+        {
+          "id": "l1",
+          "shownHref": "https://invoices.donauwerk.example/approve",
+          "realHref": "https://invoices.donauwerk.example/approve",
+          "landing": {
+            "template": "intranet_page",
+            "brand": "Donauwerk Internal Portal",
+            "trap": false
+          }
+        }
+      ],
+      "attachments": [
+        {
+          "id": "a1",
+          "filename": "invoice_moser_2023_442.pdf",
+          "kind": "pdf",
+          "preview": {
+            "title": "Invoice: Spedition Moser",
+            "text": "Invoice Number: 2026-442\nDate: 24.10.2026\nAmount Due: 1,450.00 EUR\nDescription: Logistics services - Linz-Hafen route."
+          },
+          "trap": false
+        }
+      ]
+    }
+  },
+  {
+    "id": "gen_email_08",
+    "channel": "email",
+    "isScam": false,
+    "redFlags": [],
+    "safeSignals": [
+      "Sender uses the correct internal IT Service Desk address",
+      "The link points to the official company intranet domain",
+      "The email directs users to follow standard IT processes rather than asking for credentials",
+      "No sense of artificial panic or immediate threat to account security"
+    ],
+    "correctAction": "comply",
+    "email": {
+      "fromName": "IT Service Desk",
+      "fromAddress": "it-desk@donauwerk.example",
+      "subject": "Planned IT Maintenance: Weekend of November 7th",
+      "bodyMarkdown": "Dear Team,\n\nPlease be advised that we have scheduled essential maintenance for our internal server infrastructure this coming weekend to ensure system stability. \n\n**Maintenance Window:**\nSaturday, Oct 14, 22:00 CET to Sunday, Oct 15, 04:00 CET.\n\nDuring this time, access to the intranet and local file shares may be intermittently unavailable. Please ensure all critical work is saved before Friday evening. \n\nYou can find the full schedule and a list of affected services on the [Intranet Maintenance Page](link:l1).\n\nThank you for your cooperation.\n\nBest regards,\nMarkus Leitner\nIT Service Desk Lead",
+      "links": [
+        {
+          "id": "l1",
+          "shownHref": "https://intranet.donauwerk.example/it/maintenance-schedule",
+          "realHref": "https://intranet.donauwerk.example/it/maintenance-schedule",
+          "landing": {
+            "template": "intranet_page",
+            "brand": "Donauwerk Logistik GmbH",
+            "trap": false
+          }
+        }
+      ],
+      "attachments": []
+    }
+  },
+  {
+    "id": "gen_email_09",
+    "channel": "email",
+    "isScam": false,
+    "redFlags": [],
+    "safeSignals": [
+      "The sender address matches the internal HR employee domain",
+      "The link points to the legitimate company intranet domain",
+      "No attachments are used, following the policy for HR communications"
+    ],
+    "correctAction": "comply",
+    "email": {
+      "fromName": "Elena Novak",
+      "fromAddress": "elena.novak@donauwerk.example",
+      "subject": "Reminder: Annual Compliance Training 2026",
+      "bodyMarkdown": "Hello Team,\n\nThis is a friendly reminder that the annual compliance and safety training modules for this year are now available. All staff members are required to complete these modules by the end of the month.\n\nYou can access the training dashboard and view the curriculum directly via the [internal training portal](link:l1).\n\nPlease ensure you complete the modules during your scheduled shift hours. If you encounter any technical issues, please submit a ticket via the IT service desk.\n\nBest regards,\n\nElena Novak\nHR Department\nDonauwerk Logistik GmbH",
+      "links": [
+        {
+          "id": "l1",
+          "shownHref": "https://intranet.donauwerk.example/training",
+          "realHref": "https://intranet.donauwerk.example/training",
+          "landing": {
+            "template": "intranet_page",
+            "brand": "Donauwerk Intranet",
+            "trap": false
+          }
+        }
+      ],
+      "attachments": []
+    }
+  },
+  {
+    "id": "gen_email_10",
+    "channel": "email",
+    "isScam": false,
+    "redFlags": [],
+    "safeSignals": [
+      "The sender is an internal employee using the correct company domain",
+      "The attachment is a non-executable PDF, which is the standard for company policy updates",
+      "The content directs employees to the intranet for further details, following company procedure"
+    ],
+    "correctAction": "comply",
+    "email": {
+      "fromName": "Julia Steiner",
+      "fromAddress": "julia.steiner@donauwerk.example",
+      "subject": "Updated Fire Drill Plan - Linz-Hafen",
+      "bodyMarkdown": "Hello everyone,\n\nPlease find the updated fire-drill plan for our Linz-Hafen facility attached as a PDF. This update includes new assembly point locations for the warehouse staff and updated emergency contact numbers.\n\nPlease review the document at your earliest convenience. For a detailed list of safety officers and floor-specific evacuation routes, please visit the [Safety Portal](link:l1) on our intranet.\n\nBest regards,\n\nJulia Steiner\nFacilities Management",
+      "links": [
+        {
+          "id": "l1",
+          "shownHref": "intranet.donauwerk.example/safety/fire-drill",
+          "realHref": "https://intranet.donauwerk.example/safety/fire-drill",
+          "landing": {
+            "template": "intranet_page",
+            "brand": "Donauwerk Intranet",
+            "trap": false
+          }
+        }
+      ],
+      "attachments": [
+        {
+          "id": "a1",
+          "filename": "Fire_Drill_Plan_2024.pdf",
+          "kind": "pdf",
+          "preview": {
+            "title": "Fire Drill Plan 2026",
+            "text": "Donauwerk Logistik GmbH - Emergency Evacuation Protocol. Section 1: Assembly Points. Section 2: Emergency Contacts..."
+          },
+          "trap": false
+        }
+      ]
+    }
+  },
+  {
+    "id": "gen_email_11",
+    "channel": "email",
+    "isScam": false,
+    "redFlags": [],
+    "safeSignals": [
+      "Sender address matches internal company format",
+      "No suspicious links or attachments requested",
+      "Request follows standard internal communication for scheduling"
+    ],
+    "correctAction": "comply",
+    "email": {
+      "fromName": "Florian Bauer",
+      "fromAddress": "florian.bauer@donauwerk.example",
+      "subject": "Shift swap request - Linz-Hafen next week",
+      "bodyMarkdown": "Hi team,\n\nDue to a personal appointment next Tuesday, I was wondering if anyone from the morning shift would be willing to swap with my afternoon shift? \n\nI am happy to cover your slot on Thursday instead to make up for it. Please let me know if this works for you, and once agreed, we can update the roster on the intranet.\n\nBest regards,\n\nFlorian Bauer\nShift Lead, Warehouse Linz-Hafen",
+      "links": [],
+      "attachments": []
+    }
+  },
+  {
+    "id": "gen_email_12",
+    "channel": "email",
+    "isScam": false,
+    "redFlags": [],
+    "safeSignals": [
+      "The sender's email address matches the internal corporate domain exactly",
+      "The link points to the official company intranet domain",
+      "The request follows standard reporting procedures and does not bypass the four-eyes principle or request sensitive credentials"
+    ],
+    "correctAction": "comply",
+    "email": {
+      "fromName": "Thomas Huber",
+      "fromAddress": "thomas.huber@donauwerk.example",
+      "subject": "Monthly Cost Report - Due Friday",
+      "bodyMarkdown": "Hello Team,\n\nCould you please prepare the monthly cost report for the Linz-Hafen operations? I need to review the figures before our management meeting next week.\n\nPlease ensure all data from Spedition Moser and our utility providers is included. You can find the updated reporting template and the previous month's figures in the [Finance Folder](link:l1).\n\nI would appreciate having this ready by Friday afternoon. Thank you.\n\nBest regards,\n\nThomas Huber\nCFO, Donauwerk Logistik GmbH",
+      "links": [
+        {
+          "id": "l1",
+          "shownHref": "intranet.donauwerk.example/finance/reports/2026",
+          "realHref": "https://intranet.donauwerk.example/finance/reports/2026",
+          "landing": {
+            "template": "intranet_page",
+            "brand": "Donauwerk Intranet",
+            "trap": false
+          }
+        }
+      ],
+      "attachments": []
+    }
+  },
+  {
+    "id": "gen_call_13",
+    "channel": "call",
+    "isScam": true,
+    "redFlags": [
+      {
+        "type": "authority",
+        "evidence": "Pretending to be Markus Leitner from IT Service Desk"
+      },
+      {
+        "type": "urgency",
+        "evidence": "claims an active unauthorized login from an unknown location"
+      },
+      {
+        "type": "credential_request",
+        "evidence": "asking for the MFA code sent to the user's phone"
+      },
+      {
+        "type": "process_bypass",
+        "evidence": "attempting to bypass the official it.donauwerk.example ticketing system"
+      }
+    ],
+    "safeSignals": [],
+    "correctAction": "report",
+    "call": {
+      "callerName": "Markus Leitner, IT Service Desk",
+      "callerId": "+43 732 000 4421",
+      "goal": "Steal the user's MFA code to hijack their Microsoft 365 account",
+      "target": "mfa_code",
+      "openingLine": "Hello, this is Markus Leitner from the IT Service Desk. We've detected a high-risk unauthorized login attempt on your account from an IP address in Eastern Europe, and we need to secure it immediately.",
+      "personaPrompt": "You are an IT Service Desk lead named Markus Leitner. You sound professional, calm, but very urgent. You claim that the employee's Donauwerk account is currently being compromised by a hacker. Your goal is to get the employee to read you the multi-factor authentication (MFA) code that is being sent to their mobile device right now. If the employee says they want to open a ticket or call you back, insist that there is no time because the hacker is actively downloading files. If they doubt your identity, tell them you are calling from the internal extension 1234. Never admit it is a scam. Keep every reply to 1-2 short sentences. Never break character.",
+      "voiceId": "TODO"
+    }
+  },
+  {
+    "id": "gen_call_14",
+    "channel": "call",
+    "isScam": true,
+    "redFlags": [
+      {
+        "type": "authority",
+        "evidence": "Caller claims to be from the Raiffeisen bank fraud team"
+      },
+      {
+        "type": "credential_request",
+        "evidence": "Asks the employee to read out a TAN (Transaction Authentication Number)"
+      },
+      {
+        "type": "urgency",
+        "evidence": "Claims a suspicious transaction of 2,450 EUR is currently pending"
+      }
+    ],
+    "safeSignals": [],
+    "correctAction": "report",
+    "call": {
+      "callerName": "Stefan Mayer",
+      "callerId": "+43 1 555 0123",
+      "goal": "Steal a TAN to authorize a fraudulent transfer",
+      "target": "mfa_code",
+      "openingLine": "Hello, this is Stefan Mayer from the Raiffeisen Bank Fraud Prevention department. We are calling regarding a suspicious outgoing transfer of 2,450 EUR from your corporate account.",
+      "personaPrompt": "You are Stefan Mayer, a polite but firm security officer from Raiffeisen Bank. You are calling a Donauwerk Logistik employee to 'protect' their account. You claim there is an active fraudulent transfer and you need to verify the user's identity and cancel it by having them confirm a code sent to their device. If the user is hesitant, emphasize that every second counts to stop the money from leaving the bank. If they ask you to call back, give them a fake internal bank number and tell them it will take longer to reach the specialist. Keep every reply to 1-2 short sentences. Never break character. Never admit it is a scam.",
+      "voiceId": "TODO"
+    }
+  },
+  {
+    "id": "gen_call_15",
+    "channel": "call",
+    "isScam": true,
+    "redFlags": [
+      {
+        "type": "authority",
+        "evidence": "claiming to be the CEO's personal assistant"
+      },
+      {
+        "type": "urgency",
+        "evidence": "needs them immediately for a client meeting"
+      },
+      {
+        "type": "secrecy",
+        "evidence": "tell no one else about this, it's a private matter for Katharina"
+      },
+      {
+        "type": "process_bypass",
+        "evidence": "asking to buy gift cards instead of using company procurement processes"
+      }
+    ],
+    "safeSignals": [],
+    "correctAction": "report",
+    "call": {
+      "callerName": "Lukas Weber",
+      "callerId": "+43 732 000 4412",
+      "goal": "convince the employee to purchase gift cards with company funds and send the codes",
+      "target": "payment_change",
+      "openingLine": "Hi, this is Lukas, I'm helping Katharina Weber with some urgent executive tasks today. Is this a good time to talk privately?",
+      "personaPrompt": "You are Lukas Weber, pretending to be the personal assistant to the CEO, Katharina Weber. You are calling an employee to ask for an urgent favor: purchasing several high-value gift cards (Amazon or Apple) to be used as 'surprise tokens' for a VIP client during a meeting. You must insist that this is a confidential matter and should not be discussed with anyone else, including managers, to avoid 'bureaucratic delays'. If the target mentions company policy or asks to check with a supervisor, become increasingly stressed and emphasize how much the CEO is counting on them personally. Never admit it is a scam. Keep every reply to 1-2 short sentences. Never break character.",
+      "voiceId": "TODO"
+    }
+  },
+  {
+    "id": "gen_call_16",
+    "channel": "call",
+    "isScam": true,
+    "redFlags": [
+      {
+        "type": "payment_change",
+        "evidence": "new bank account details for Spedition Moser"
+      },
+      {
+        "type": "urgency",
+        "evidence": "needs the change confirmed immediately before the afternoon payment run"
+      },
+      {
+        "type": "process_bypass",
+        "evidence": "asking to bypass the standard verification via the invoice portal"
+      }
+    ],
+    "safeSignals": [],
+    "correctAction": "report",
+    "call": {
+      "callerName": "Lukas Weber",
+      "callerId": "+43 732 000 4421",
+      "goal": "Convince the employee to update the bank details for Spedition Moser in the system to a fraudulent account.",
+      "target": "bank_change",
+      "openingLine": "Hello, this is Lukas from the accounting department at Spedition Moser. I'm calling because we've just updated our IBAN and I need to make sure your next payment doesn't bounce.",
+      "personaPrompt": "You are Lukas, a frantic but polite accountant from Spedition Moser. You claim your company has switched banks and you are calling to ensure Donauwerk Logistik updates your payment details before their afternoon payment run. You must sound helpful but stressed. If the employee asks to call you back or use the official portal, insist that the portal update takes 24 hours and the payment run is happening in 30 minutes, so a quick verbal confirmation is 'much safer' to avoid service interruptions. Never admit it is a scam. Keep every reply to 1-2 short sentences. Never break character.",
+      "voiceId": "TODO"
+    }
+  },
+  {
+    "id": "gen_call_17",
+    "channel": "call",
+    "isScam": false,
+    "redFlags": [],
+    "safeSignals": [
+      "Caller identifies as IT Service Desk following a known internal process",
+      "Caller asks for a technical action (restart) rather than sensitive credentials",
+      "Caller accepts the user's request to follow up via the official IT ticket system"
+    ],
+    "correctAction": "comply",
+    "call": {
+      "callerName": "Markus Leitner",
+      "callerId": "+43 732 000 1234",
+      "goal": "Follow up on a support ticket regarding laptop performance and request a system restart.",
+      "target": "none",
+      "openingLine": "Hello, this is Markus from the IT Service Desk. I'm calling regarding the ticket you opened earlier about your laptop's slow performance.",
+      "personaPrompt": "You are Markus Leitner, the IT Service Desk lead. You are calling a staff member to follow up on an existing IT ticket. Your goal is to guide them through a standard troubleshooting step: restarting their laptop to clear system cache. You do not ask for passwords, MFA codes, or any private information. If the user is busy or wants to communicate only via the portal, you are helpful and polite, telling them you will leave a note on the ticket at it.donauwerk.example. Keep every reply to 1-2 short sentences. Never break character.",
+      "voiceId": "TODO"
+    }
+  },
+  {
+    "id": "gen_call_18",
+    "channel": "call",
+    "isScam": false,
+    "redFlags": [],
+    "safeSignals": [
+      "The caller provides a specific, existing business reason (rescheduling a pickup)",
+      "The caller identifies as a known partner (Spedition Moser)",
+      "The caller accepts the process of verifying details via the official switchboard"
+    ],
+    "correctAction": "comply",
+    "call": {
+      "callerName": "Lukas Moser",
+      "callerId": "+43 732 000 4492",
+      "goal": "Reschedule a truck pickup window for a scheduled shipment at Linz-Hafen.",
+      "target": "none",
+      "openingLine": "Hello, this is Lukas Moser from Spedition Moser. I'm calling about the pickup at the Linz-Hafen warehouse that was planned for this afternoon.",
+      "personaPrompt": "You are Lukas Moser, a dispatcher from Spedition Moser, a regular logistics partner. You are calling Florian Bauer at the Linz-Hafen warehouse to inform him that your driver is stuck in traffic and needs to move the pickup slot from 14:00 to 16:30. You are professional and polite. If the employee asks you to call them back or follow a formal procedure, you are happy to comply and will not push back. Keep every reply to 1-2 short sentences. Never break character.",
+      "voiceId": "TODO"
+    }
+  },
+  {
+    "id": "gen_call_19",
+    "channel": "call",
+    "isScam": false,
+    "redFlags": [],
+    "safeSignals": [
+      "Caller follows official procedure by directing the employee to the intranet rather than sending an attachment",
+      "Caller does not ask for any credentials, passwords, or sensitive personal data",
+      "Caller accepts the employee's request to verify the call via the official company directory"
+    ],
+    "correctAction": "comply",
+    "call": {
+      "callerName": "Elena Novak",
+      "callerId": "+43 732 000 4512",
+      "goal": "Remind employee to sign the mandatory annual training document on the intranet.",
+      "target": "none",
+      "openingLine": "Hello, this is Elena Novak from HR. I'm just calling because we noticed your signature is still missing on the new safety training form.",
+      "personaPrompt": "You are Elena Novak from the HR department at Donauwerk Logistik. You are calling an employee to politely remind them to complete a mandatory administrative task. You are professional, helpful, and calm. If the employee is hesitant or wants to verify who you are, tell them they can find your contact details on the company intranet or call the main switchboard to be transferred back to HR. You must insist that they complete the task via intranet.donauwerk.example and explicitly state that you will not be sending any files via email. If they ask for help, tell them to open a ticket with IT if they have technical issues. Keep every reply to 1-2 short sentences. Never break character.",
+      "voiceId": "TODO"
+    }
+  },
+  {
+    "id": "gen_call_20",
+    "channel": "call",
+    "isScam": false,
+    "redFlags": [],
+    "safeSignals": [
+      "The caller identifies as a known employee from the Facilities department",
+      "The caller follows the standard process of notifying internal staff about upcoming facility maintenance",
+      "The caller is willing to be called back on the main switchboard to verify identity"
+    ],
+    "correctAction": "comply",
+    "call": {
+      "callerName": "Julia Steiner",
+      "callerId": "+43 732 000 4512",
+      "goal": "Inform staff that window cleaners will be on-site next Tuesday and ensure windows are closed.",
+      "target": "none",
+      "openingLine": "Hello, this is Julia Steiner from Facilities. I'm just calling to let everyone know that the window cleaning crew will be working on the exterior of the building next Tuesday.",
+      "personaPrompt": "You are Julia Steiner, the Facilities manager at Donauwerk Logistik GmbH. You are calling various department heads to coordinate building maintenance. You are professional, polite, and efficient. Your goal is to ensure people know the window cleaners are coming so they can secure their desks and close windows. If the person you are talking to is skeptical or wants to verify who you are, tell them they can call you back via the main switchboard at +43 732 000 1000 or check the internal announcement on the intranet. Keep every reply to 1-2 short sentences. Never break character.",
+      "voiceId": "TODO"
     }
   }
 ]
