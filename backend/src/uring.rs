@@ -291,6 +291,17 @@ impl Worker {
         match tag {
             ACCEPT => {
                 if res >= 0 {
+                    // Without this, header and body sends hit Nagle + delayed ACK: ~40 ms per response
+                    let one: libc::c_int = 1;
+                    unsafe {
+                        libc::setsockopt(
+                            res,
+                            libc::IPPROTO_TCP,
+                            libc::TCP_NODELAY,
+                            &one as *const libc::c_int as *const libc::c_void,
+                            std::mem::size_of::<libc::c_int>() as libc::socklen_t,
+                        )
+                    };
                     let gen_ = self.next_gen;
                     self.next_gen = self.next_gen.wrapping_add(1).max(1);
                     self.conns.insert(
@@ -390,6 +401,17 @@ impl Worker {
                 None => return,
                 Some(Out::Data(d)) if d.is_empty() => {
                     c.pending.pop_front();
+                }
+                Some(Out::Data(_))
+                    if c.sent == 0 && matches!(c.pending.get(1), Some(Out::Data(_))) =>
+                {
+                    // Coalesce queued pieces (head + body, SSE chunk framing) into one send
+                    let mut merged = Vec::new();
+                    while let Some(Out::Data(d)) = c.pending.front() {
+                        merged.extend_from_slice(d);
+                        c.pending.pop_front();
+                    }
+                    c.pending.push_front(Out::Data(Bytes::from(merged)));
                 }
                 Some(Out::Data(d)) => {
                     let (ptr, len) = (d[c.sent..].as_ptr(), (d.len() - c.sent) as u32);
