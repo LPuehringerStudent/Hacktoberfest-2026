@@ -89,7 +89,9 @@ Rules:
 - personaPrompt (calls): second person ("You are ..."), describes who the caller pretends to be, what they want,
   how they react to pushback, and ends with: "Keep every reply to 1-2 short sentences. Never break character."
   For scams also: "Never admit it is a scam." For legit calls: the caller accepts callbacks and tickets happily.
-- English only."""
+- English only, including the openingLine. Today is 30 October 2026: use 2026 dates and years.
+- Fields the trainee sees (names, addresses, subject, body, filenames, previews, callerName, openingLine) must never
+  hint that it is a scam: no "(fake)", "(impersonator)", "phishing" and so on."""
 
 # (channel, isScam, theme). Varied so the pool doesn't repeat itself.
 SLOTS = [
@@ -119,6 +121,7 @@ RED_FLAGS = {"urgency", "authority", "credential_request", "payment_change", "se
              "link_mismatch", "risky_attachment", "secrecy", "process_bypass"}
 TEMPLATES = {"m365_login", "intranet_page"}
 KINDS = {"pdf", "docx_macro"}
+GIVEAWAY_RE = re.compile(r"scam|phish|impersonat|\bfake\b|fraudster|attacker|\b20(1\d|2[0-5])\b|\bHallo\b|\bIch\b", re.I)
 DOMAIN_RE = re.compile(r"(?:https?://|@)([A-Za-z0-9.-]+\.[A-Za-z]{2,})")
 
 
@@ -245,6 +248,10 @@ def validate(s, channel, scam):
             need(c, k, str, "call")
         c["voiceId"] = os.environ.get("ELEVENLABS_VOICE_ID") or "TODO"
 
+    public = {k: v for k, v in c.items() if k not in ("goal", "target", "personaPrompt")}
+    for text in strings(public):
+        if GIVEAWAY_RE.search(text):
+            errs.append(f"visible text gives the answer away or is outdated/non-English: {text[:80]!r}")
     for text in strings(s):
         for host in DOMAIN_RE.findall(text):
             if not host.lower().rstrip(".").endswith(".example"):
