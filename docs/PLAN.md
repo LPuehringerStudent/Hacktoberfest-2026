@@ -6,17 +6,19 @@ Working name: **Phishing Dojo** <!-- TODO: final name -->
 
 Most breaches start with a person, not a bug. Non-technical staff practise spotting scams in a safe simulator. They work through emails (with links and attachments) and **live phone calls** with an AI caller. Each one is either a normal work request or a scam. They either do what's asked or report it, and a debrief shows which red flags they caught or missed.
 
-## Scope for the 18:30 submission (cut at 15:45)
+## Scope for the 18:30 submission (cut at 15:45, timeline updated 17:05)
 
 **This section overrides the rest of the document.** Anything not listed here is cut.
 
 | Time | Milestone |
 |---|---|
-| **16:45** | Each part works on its own: frontend on the mock API, ~20 Gemma scenarios committed, a live ElevenLabs call with a Gemma persona |
-| **17:15** | Integrated: a full round of emails + calls → debrief → score on the published Lovable app |
-| **17:30** | **Feature freeze.** Only bug fixes after this |
-| 17:30–18:00 | README (pitch, screenshots, AI tools used, what we learned), demo video with audio |
-| **18:00–18:20** | Submit on OrganizerHQ to **all 4 challenges**. 10 min buffer |
+| **until 17:50** | Build and polish. Real-microphone call test. README drafted in parallel (no code freeze needed for docs) |
+| **17:50** | **Feature freeze.** Only bug fixes after this |
+| 17:50–18:15 | Final frontend copy, README screenshots, demo video with audio |
+| **18:15–18:30** | Submit on OrganizerHQ to **all 4 challenges** |
+| 18:45 | Hard limit (OrganizerHQ still accepts until then). Buffer only, don't plan into it |
+
+*Timeline updated at 17:05: the deadline is 18:30 with a buffer to 18:45, more time than the original 17:30 freeze assumed.*
 
 | Who | Builds | Card |
 |---|---|---|
