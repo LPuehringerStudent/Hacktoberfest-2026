@@ -76,7 +76,7 @@
           "shownHref": "https://invoices.donauwerk.example/2026-4471",
           "realHref": "https://invoices.donauwerk.example/2026-4471",
           "landing": {
-            "template": "invoice_portal",
+            "template": "intranet_page",
             "brand": "Donauwerk Invoices",
             "trap": false
           }
@@ -154,7 +154,7 @@
       "fromName": "Donauwerk IT Support",
       "fromAddress": "microsoft-security@donauwerk-support.example",
       "subject": "URGENT: Your Microsoft 365 Password Expires Today",
-      "bodyMarkdown": "Dear User,\n\nOur systems indicate that your Donauwerk Logistik GmbH password is scheduled to expire in **4 hours**. To prevent a complete lockout from your email and Microsoft 365 services, you must synchronize your credentials immediately.\n\nPlease use our secure portal to [Update Password](l1) and confirm your identity. Failure to comply will result in a mandatory IT ticket and a 24-hour account suspension.\n\nRegards,\n\nIT Service Desk\nDonauwerk Logistik GmbH",
+      "bodyMarkdown": "Dear User,\n\nOur systems indicate that your Donauwerk Logistik GmbH password is scheduled to expire in **4 hours**. To prevent a complete lockout from your email and Microsoft 365 services, you must synchronize your credentials immediately.\n\nPlease use our secure portal to [Update Password](link:l1) and confirm your identity. Failure to comply will result in a mandatory IT ticket and a 24-hour account suspension.\n\nRegards,\n\nIT Service Desk\nDonauwerk Logistik GmbH",
       "links": [
         {
           "id": "l1",
@@ -388,7 +388,7 @@
       "fromName": "Donauwerk HR Dept",
       "fromAddress": "hr-noreply@donauwerk-hr.example",
       "subject": "Urgent: Q4 Bonus Distribution List - Action Required",
-      "bodyMarkdown": "Dear Employee,\n\nAs part of the end-of-year financial review, the **Q4 Bonus Distribution List** has been uploaded to the secure portal. \n\nTo ensure your details are correct and to avoid any delays in processing, please [View Bonus List](l1) and confirm your information. \n\nPlease review and sign by the end of the day to ensure timely processing.\n\nRegards,\n\nHR Department\nDonauwerk Logistik GmbH",
+      "bodyMarkdown": "Dear Employee,\n\nAs part of the end-of-year financial review, the **Q4 Bonus Distribution List** has been uploaded to the secure portal. \n\nTo ensure your details are correct and to avoid any delays in processing, please [View Bonus List](link:l1) and confirm your information. \n\nPlease review and sign by the end of the day to ensure timely processing.\n\nRegards,\n\nHR Department\nDonauwerk Logistik GmbH",
       "links": [
         {
           "id": "l1",

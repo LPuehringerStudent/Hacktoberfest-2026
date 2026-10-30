@@ -159,6 +159,7 @@ def chat(messages):
 
 
 def extract_json(text):
+    text = re.sub(r"<thought>.*?</thought>", "", text, flags=re.S)
     start, end = text.find("{"), text.rfind("}")
     if start < 0 or end < start:
         raise ValueError("no JSON object in the reply")
@@ -240,9 +241,11 @@ def validate(s, channel, scam):
                 errs.append("attachment.trap must be a boolean")
             elif a["trap"] and not scam:
                 errs.append("legit scenarios have no trap attachments")
-        for ref in re.findall(r"\(link:([^)]+)\)", c.get("bodyMarkdown") or ""):
-            if ref not in link_ids:
-                errs.append(f"body references link:{ref} but no such link")
+        refs = set(re.findall(r"\(link:([^)]+)\)", c.get("bodyMarkdown") or ""))
+        for ref in refs - link_ids:
+            errs.append(f"body references link:{ref} but no such link")
+        for lid in link_ids - refs:
+            errs.append(f"link {lid} must appear in bodyMarkdown as [text](link:{lid})")
     else:
         for k in ("callerName", "callerId", "goal", "target", "openingLine", "personaPrompt"):
             need(c, k, str, "call")
