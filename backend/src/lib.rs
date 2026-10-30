@@ -2,6 +2,7 @@ pub mod db;
 pub mod relay;
 pub mod routes;
 pub mod scenario;
+pub mod summary;
 pub mod uring;
 
 use std::{
@@ -71,6 +72,7 @@ pub fn app(state: AppState, extra_origins: Vec<String>) -> Router {
         .route("/api/scenario/{id}/event", post(routes::record_event))
         .route("/api/scenario/{id}/decision", post(routes::decide))
         .route("/api/stats", get(routes::stats))
+        .route("/api/round/summary", post(summary::round_summary))
         // ElevenLabs custom LLM: the server URL may be configured with or without /v1
         .route("/v1/chat/completions", post(relay::chat_completions))
         .route("/chat/completions", post(relay::chat_completions))

@@ -93,6 +93,13 @@ Call:
 }
 ```
 
+**Optional (smarter debrief):** send `"observed": ["hover_link", "open_attachment", …]`, the event types the user triggered on this scenario. Response also contains:
+
+- `noticed`: red flags the user looked at but still went ahead (e.g. hovered the fake link, then clicked). Show as "You noticed this, trust that feeling".
+- `tips`: `[{ "type": "link_mismatch", "tip": "Hover before you click: …" }]`, one per missed flag.
+
+Old clients that only send `action` keep working.
+
 Red flag `type`: `urgency` | `authority` | `credential_request` | `payment_change` | `sender_mismatch` | `link_mismatch` | `risky_attachment` | `secrecy` | `process_bypass`.
 
 ### `POST /v1/chat/completions` (live): ElevenLabs custom LLM
@@ -142,6 +149,26 @@ Aggregates from the event log, for a live stats panel ("60% clicked the fake log
                   "opens": 5, "hoveredLink": 3, "clickedLink": 2, "decisions": 5, "correct": 3, "fellForIt": 2 }]
 }
 ```
+
+### `POST /api/round/summary` (live): feedback after 5 cases
+
+Send what the user did in the round. Scores are recomputed server-side. Self-hosted Gemma 4 writes personal feedback (~5–10 s, show a spinner); if Gemma is slow or down, a rule-based text comes back instead (`feedbackSource: "rules"`).
+
+```json
+{ "results": [{ "id": "gen_email_01", "action": "fell_for_it", "observed": ["hover_link"] }, { "id": "gen_call_13", "action": "report" }] }
+```
+
+```json
+{
+  "total": 5, "correct": 3, "scamsCaught": 2, "scamsMissed": 1, "falseAlarms": 1, "callsCorrect": 1, "callsTotal": 2,
+  "rating": "solid",
+  "weakSpots": [{ "type": "link_mismatch", "missed": 1, "tip": "Hover before you click: where the link really goes is what counts." }],
+  "feedback": "You did a great job identifying the malicious salary email … Next time, always hover over any link to verify the destination before clicking.",
+  "feedbackSource": "gemma"
+}
+```
+
+`rating`: `expert` (≥90%) | `solid` (60–89%) | `at_risk`. Up to 3 `weakSpots`, most missed first.
 
 ### Planned
 
