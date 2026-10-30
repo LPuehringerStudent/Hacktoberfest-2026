@@ -56,7 +56,7 @@ For a self-hosted Gemma 4, run `llama-server` with the GGUF weights and set `MOD
 | Challenge | How this project qualifies |
 |---|---|
 | 🏆 **Best Open-Source AI Project** (DigitalOcean), **won** | Open-weight Gemma 4 writes every scenario and plays every caller; without it there is no app. MIT-licensed, public repo. Gemma 4 26B A4B also runs on our own CPU server with llama.cpp (Q4_0, ~11.6 tokens/s, [benchmark](docs/PLAN.md#model-hosting)); switching is one env var. |
-| 🏆 **Best Use of Gemma 4**, **won** | `gemma-4-26b-a4b-it` with system instructions (company fact sheet, training framing), structured JSON validated against a typed schema with a self-correction loop, and real-time role-play as phone personas. <!-- TODO: function calling (end_call), if it works in the demo --> |
+| 🏆 **Best Use of Gemma 4**, **won** | `gemma-4-26b-a4b-it` with system instructions (company fact sheet, training framing), structured JSON validated against a typed schema with a self-correction loop, and real-time role-play as phone personas. Function calling: the caller hangs up on its own by calling ElevenLabs' `end_call` tool, which our relay passes through to Gemma. |
 | **Best Use of ElevenLabs** | Half of the training is live calls: a voice agent you can actually argue with, driven by Gemma through our backend. |
 | **Best Use of Lovable** | The whole frontend (inbox, link hover, landing pages, attachment previews, call screen, debrief) is built in Lovable and mirrored into [`frontend/`](frontend/). |
 
@@ -66,7 +66,8 @@ Everything is fictional: one made-up company and only the reserved `.example` do
 
 ## What we learned
 
-<!-- TODO: one or two lines each, what was new for you -->
+- **io_uring:** we wrote our own HTTP/1.1 server on io_uring ([`backend/src/uring.rs`](backend/src/uring.rs), `SERVER=uring`) with multishot accept, multishot recv and a provided buffer ring, serving the same Axum `Router`. In our [load test](docs/PLAN.md#load-test-1705-r740-oha-pinned-to-16-other-cores-15-s-per-run-tarock-training) it handled 1.5–2.3× the requests of than the Axum listener.
+- **ElevenLabs:** first time building a voice agent, and first time plugging our own backend in as its *custom LLM*. We stream Gemma's replies back fast enough for a live call and keep each persona on the server.
 
 ## Team
 
