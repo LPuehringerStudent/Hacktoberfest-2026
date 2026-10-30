@@ -1,21 +1,24 @@
 TRIPWIRE — 2-MINUTE PITCH
-Everything you say, in order. Read it once out loud with a stopwatch.
+6 slides. Everything you say, in order, on the slide it belongs to.
+Read it once out loud with a stopwatch.
+
+SLIDES:  1 title · 2 video · 3 challenges · 4 under the hood · 5 close · 6 questions
 
 --------------------------------------------------------------------
 
-[0:00]  (hook — look at the judges, not the screen)
+[1/6]  0:00  hook — look at the judges, not the screen
 
     62% of breaches involve a human being — not a bug in the code.
     Slideshows don't fix that. So we built a gym for the reflex to
     stop and check: Tripwire.
 
 
-[0:12]  (PRESS PLAY. SAY NOTHING WHILE THE VIDEO RUNS.)
+[2/6]  0:12  PRESS PLAY. Say nothing while the video runs.
 
     >>>  50-SECOND VIDEO  <<<
 
 
-[1:02]  (four challenges — one sentence each, no elaboration)
+[3/6]  1:02  four challenges — one sentence each, no elaboration
 
     Lovable built the whole frontend: an inbox anyone can use with
     zero training — hover a link and it shows where it really goes.
@@ -32,20 +35,20 @@ Everything you say, in order. Read it once out loud with a stopwatch.
     for a callback — and it argues with you.
 
 
-[1:43]  (the hard part)
+[4/6]  1:43  the hard part
 
     Underneath: a hand-written io_uring server, one point five to
     two point three times faster than our Axum baseline. Same
     routes, one env var.
 
 
-[1:54]  (close)
+[5/6]  1:54  close
 
     Your firewall is fine. Your people need practice. Thank you.
 
 
-[2:00]  (STOP. Advance to the Questions? slide. Don't say "any
-         questions?" — let the silence do it.)
+[6/6]  2:00  STOP. Stay on this slide. Don't say "any questions?" —
+            let the silence ask it for you.
 
 --------------------------------------------------------------------
 
@@ -53,7 +56,7 @@ IF YOU RUN LONG: drop the io_uring paragraph. Never the 62%.
 
 IF A JUDGE ASKS where 62% comes from: Verizon's 2026 Data Breach
 Investigations Report — 62% of breaches involve the human element.
-It's printed on the slide.
+It's printed on slide 1.
 
 ONLY SAY the "function call" sentence if you have seen the caller
 actually hang up on its own. If not, say "and it gets you off the
