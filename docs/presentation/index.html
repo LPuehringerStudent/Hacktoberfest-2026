@@ -70,9 +70,7 @@
     background: #1d1b1b;
     overflow: hidden;
   }
-  /* Hidden until demo.mp4 actually loads, or Chrome paints its own "no supported
-     format" message and native controls on top of the placeholder. */
-  .video-frame video { display: none; width: 100%; height: 100%; object-fit: contain; background: #000; }
+  .video-frame video { display: block; width: 100%; height: 100%; object-fit: contain; background: #000; }
   .video-placeholder {
     position: absolute; inset: 0;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -146,24 +144,25 @@
 
     <!-- 2. Demo video: 50 seconds -->
     <section>
-      <p class="stamp" style="margin-bottom:.5em">Live demo · 00:50</p>
+      <p class="stamp" style="margin-bottom:.5em">Live demo</p>
       <div class="video-frame" id="video-frame">
         <!-- Drop the recording here as demo.mp4 -->
         <video id="demo-video" playsinline preload="metadata" controls>
           <source src="demo.mp4" type="video/mp4">
         </video>
 
-        <!-- Visible until demo.mp4 reports metadata. If the file is missing, it stays. -->
-        <div class="video-placeholder" id="video-placeholder">
-          <div class="big">▶ Demo recording · 50 s</div>
+        <!-- Hidden unless demo.mp4 is missing or unplayable: the video and the play
+             button are the default so a slow load never leaves a dashed box on screen. -->
+        <div class="video-placeholder" id="video-placeholder" style="display:none">
+          <div class="big">▶ Demo recording missing</div>
           <div class="sub">
-            drop <b>demo.mp4</b> next to this file<br>
+            save it as <b>demo.mp4</b> next to this file<br>
             must include the ElevenLabs call audio
           </div>
         </div>
 
-        <button class="play-overlay" id="play-overlay" aria-label="Play the demo" style="display:none">
-          <span>▶ Play the 50 s demo</span>
+        <button class="play-overlay" id="play-overlay" aria-label="Play the demo">
+          <span>▶ Play the demo</span>
         </button>
       </div>
       <aside class="notes">
@@ -307,19 +306,22 @@
   const overlay = document.getElementById('play-overlay');
   const placeholder = document.getElementById('video-placeholder');
 
-  // The placeholder is the DEFAULT state and only hides once the file actually loads:
-  // with <source>, a missing demo.mp4 fires `error` on the <source>, never on the <video>.
+  // Video + play button are the default so a slow or picky load still shows something
+  // playable. With <source>, a missing demo.mp4 fires `error` on the <source>, never on
+  // the <video>, which is the only signal we get.
   const showPlaceholder = () => {
     video.style.display = 'none';
-    placeholder.style.display = 'flex';
     overlay.style.display = 'none';
+    placeholder.style.display = 'flex';
   };
-  video.addEventListener('loadedmetadata', () => {
-    video.style.display = 'block';
-    placeholder.style.display = 'none';
-    overlay.style.display = 'flex';
-  });
+  // A missing file can fail during parsing, before this script runs, so the error event
+  // alone is not enough. networkState 3 = NETWORK_NO_SOURCE: every <source> gave up.
+  const checkSource = () => {
+    if (video.networkState === 3) showPlaceholder();
+  };
   video.querySelector('source').addEventListener('error', showPlaceholder);
+  checkSource();
+  setTimeout(checkSource, 1500);
 
   // A real click is what lets the browser play audio, so never rely on autoplay.
   overlay.addEventListener('click', () => {

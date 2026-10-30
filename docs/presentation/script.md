@@ -4,7 +4,7 @@ Everything you say, in order, on the slide it belongs to. Read it once out loud 
 
 **Slides:** 1 title · 2 video · 3 challenges · 4 under the hood · 5 close · 6 questions
 
-**Length:** ~171 spoken words ≈ 73 s, plus the 50 s video ≈ **2:03**. If the timer goes red, drop the io_uring paragraph on slide 4 — never the 62%.
+**Length:** ~171 spoken words ≈ 73 s, plus the video's 46.6 s ≈ **2:00**. If the timer goes red, drop the io_uring paragraph on slide 4 — never the 62%.
 
 ---
 
@@ -22,11 +22,11 @@ Everything you say, in order, on the slide it belongs to. Read it once out loud 
 
 *Press play. Say nothing while it runs.*
 
-> **▶ 50-SECOND VIDEO ◀**
+> **▶ VIDEO — 46 s, press play ◀**
 
 ---
 
-## 3 of 6 · 1:02 — Four challenges
+## 3 of 6 · 0:59 — Four challenges
 
 *One sentence each. No elaboration.*
 
@@ -45,20 +45,20 @@ Everything you say, in order, on the slide it belongs to. Read it once out loud 
 
 ---
 
-## 4 of 6 · 1:43 — The hard part
+## 4 of 6 · 1:40 — The hard part
 
 > Underneath: a hand-written io_uring server, one point five to two point
 > three times faster than our Axum baseline. Same routes, one env var.
 
 ---
 
-## 5 of 6 · 1:54 — Close
+## 5 of 6 · 1:51 — Close
 
 > Your firewall is fine. Your people need practice. Thank you.
 
 ---
 
-## 6 of 6 · 2:00 — Questions?
+## 6 of 6 · 1:57 — Questions?
 
 *Stop talking. Stay on this slide. Don't say "any questions?" — let the silence ask it for you.*
 
