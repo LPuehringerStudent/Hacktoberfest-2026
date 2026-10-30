@@ -21,9 +21,9 @@ Applies to every agent working in this repo (Claude Code, Codex, Cursor, Copilot
 
 ## Tech defaults (until the team decides otherwise in `docs/ARCHITECTURE.md`)
 
-- **Backend:** Python 3.12 + FastAPI in `backend/`. Use `uv` for deps.
-- **Gemma 4:** `google-genai` SDK, env `GEMINI_API_KEY`, model `gemma-4-26b-a4b-it` (fast MoE) or `gemma-4-31b-it` (stronger). Supports image input, function calling, structured JSON output, and system instructions.
-- **ElevenLabs:** official `elevenlabs` Python SDK, env `ELEVENLABS_API_KEY`. Called from the backend only.
+- **Backend:** Rust (edition 2024) + Axum 0.8 + Tokio in `backend/`. Routes are in `src/lib.rs`. The io_uring server will replace the Axum listener later; handlers stay the same. Run `cargo fmt`, `cargo clippy --all-targets` and `cargo test` before a PR. `tests/smoke.rs` must keep passing.
+- **Gemma 4:** OpenAI-compatible chat API, either local `llama-server` or the Gemini API (`MODEL_BASE_URL`, `GEMINI_API_KEY`), model `gemma-4-26b-a4b-it` (fast MoE) or `gemma-4-31b-it` (stronger). Supports image input, function calling, structured JSON output, and system instructions.
+- **ElevenLabs:** Agents platform with our backend as its *custom LLM* (`POST /v1/chat/completions`). Env `ELEVENLABS_API_KEY`. Keys stay in the backend.
 - **Frontend:** whatever Lovable generates (React + Vite + TS + Tailwind). It calls the backend at a public URL set in `src/config.ts` (Lovable's preview can't reach `localhost`). The backend must allow CORS from `*.lovable.app` / `*.lovableproject.com`.
 - SDKs move fast. **Look up current docs** (context7 / official docs) instead of relying on memory for model IDs and SDK signatures.
 
