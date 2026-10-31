@@ -9,8 +9,8 @@
   <a href="#run-it-locally">Run it locally</a>
 </p>
 
-> 🏆 **Winner of 2 of 4 prize categories at MLH x YAIL Hacktoberfest HackDay**, the only team to win more than one:
-> **Best Use of Gemma 4** and **Best Open-Source AI Project** (DigitalOcean).
+> 🏆 **#1 overall of 12 teams at MLH x YAIL Hacktoberfest HackDay** (average 6.50, runner-up 5.60), and the only team to win more than one prize category:
+> **Best Use of Gemma 4** and **Best Open-Source AI Project** (DigitalOcean). [Full placings](#results)
 
 Most breaches start with a person, not a bug. **Tripwire** is a safe simulator where staff of a fictional company work through their inbox and answer their phone. Each email or call is either a normal work request or a scam. You decide whether to **do it** or **report it**, and the debrief shows exactly which red flags you caught or missed.
 
@@ -50,6 +50,18 @@ python3 scripts/generate_scenarios.py      # optional: regenerate the scenarios 
 ```
 
 For a self-hosted Gemma 4, run `llama-server` with the GGUF weights and set `MODEL_BASE_URL=http://127.0.0.1:8080/v1`. Frontend: [`frontend/README.md`](frontend/README.md).
+
+## Results
+
+Average judges' scores (5 votes), out of 12 teams:
+
+| Category | Score | Place |
+|---|---|---|
+| Best Use of Gemma 4 | 7.40 | 🏆 1st |
+| Best Open-Source AI Project (DigitalOcean) | 6.60 | 🏆 1st |
+| Best Use of ElevenLabs | 5.80 | 2nd |
+| Best Use of Lovable | 6.20 | 4th |
+| **Overall average** | **6.50** | **1st** |
 
 ## Challenges we entered
 
